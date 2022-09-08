@@ -24,8 +24,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int updateSellerAuth(SellerAuthReqDto dto) {
-        return 0;
+    public long updateSellerAuth(SellerAuthReqDto dto) {
+
+        Member findMember = memberRepository.findById(dto.getMemberId()).orElseThrow();
+        findMember.updateStatus(dto.getStatus());
+
+        Member updatedMember = memberRepository.save(findMember);
+        return updatedMember.getId();
     }
 
     @Override
