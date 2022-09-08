@@ -9,7 +9,7 @@ public interface MemberService {
 
     long updateMemberInfo(MemberInfoReqDto dto);
 
-    int updateSellerAuth(SellerAuthReqDto dto);
+    long updateSellerAuth(SellerAuthReqDto dto);
 
     Optional<List<Member>> getSellers(SellerAuthReqDto dto);
 
