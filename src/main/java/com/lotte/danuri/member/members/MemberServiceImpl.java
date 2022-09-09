@@ -2,6 +2,7 @@ package com.lotte.danuri.member.members;
 
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.SellerAuthReqDto;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<List<Member>> getSellers(SellerAuthReqDto dto) {
-        return Optional.empty();
+    public List<Member> getSellers(SellerAuthReqDto dto) {
+
+        // role : 2 -> seller, status : 1 -> 등록, 0 -> 비등록(대기중)
+        List<Member> memberList = memberRepository.findByRoleAndStatus(dto.getRole(), dto.getStatus())
+                                                    .orElseGet(ArrayList::new);
+        return memberList;
     }
 }
