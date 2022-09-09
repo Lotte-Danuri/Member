@@ -1,6 +1,7 @@
 package com.lotte.danuri.member.members;
 
 import com.lotte.danuri.member.members.dto.SellerAuthReqDto;
+import com.lotte.danuri.member.members.dto.SellerRespDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,17 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public List<Member> getSellers(SellerAuthReqDto dto) {
+    public List<SellerRespDto> getSellers(SellerAuthReqDto dto) {
 
         // role : 2 -> seller, status : 1 -> 등록, 0 -> 비등록(대기중)
         List<Member> memberList = memberRepository.findByRoleAndStatus(dto.getRole(), dto.getStatus())
             .orElseGet(ArrayList::new);
-        return memberList;
+
+        List<SellerRespDto> resultList = new ArrayList<>();
+        memberList.forEach(m -> {
+            resultList.add(new SellerRespDto(m.getId(), m.getName()));
+        });
+
+        return resultList;
     }
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.lotte.danuri.member.members.dto.SellerAuthReqDto;
+import com.lotte.danuri.member.members.dto.SellerRespDto;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class AdminServiceTest {
     void 관리자_셀러_조회_등록() {
 
         SellerAuthReqDto dto = new SellerAuthReqDto(2,1);
-        List<Member> list =  adminService.getSellers(dto);
+        List<SellerRespDto> list =  adminService.getSellers(dto);
 
         list.forEach(member -> System.out.println(member.getName()));
         assertThat(list.size()).isGreaterThanOrEqualTo(0);
@@ -44,7 +45,7 @@ public class AdminServiceTest {
     void 관리자_셀러_조회_비등록() {
 
         SellerAuthReqDto dto = new SellerAuthReqDto(2,0);
-        List<Member> list =  adminService.getSellers(dto);
+        List<SellerRespDto> list =  adminService.getSellers(dto);
 
         list.forEach(member -> System.out.println(member.getName()));
         assertThat(list.size()).isGreaterThanOrEqualTo(0);
