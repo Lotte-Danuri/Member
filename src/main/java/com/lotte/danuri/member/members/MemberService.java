@@ -9,9 +9,4 @@ public interface MemberService {
 
     long updateMemberInfo(MemberInfoReqDto dto);
 
-    long updateSellerAuth(SellerAuthReqDto dto);
-
-    List<Member> getSellers(SellerAuthReqDto dto);
-
-
 }

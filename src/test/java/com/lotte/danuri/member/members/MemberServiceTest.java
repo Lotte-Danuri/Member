@@ -33,37 +33,4 @@ public class MemberServiceTest {
         assertEquals(memberId, result);
     }
 
-    @Test
-    void 관리자_셀러_등록수정삭제() {
-
-        long memberId = 1L;
-
-        SellerAuthReqDto dto = new SellerAuthReqDto(1L, 2, 1);
-
-        long result = memberService.updateSellerAuth(dto);
-
-        assertEquals(memberId, result);
-    }
-
-    @Test
-    void 관리자_셀러_조회_등록() {
-
-        SellerAuthReqDto dto = new SellerAuthReqDto(2,1);
-        List<Member> list =  memberService.getSellers(dto);
-
-        list.forEach(member -> System.out.println(member.getName()));
-        assertThat(list.size()).isGreaterThanOrEqualTo(0);
-
-    }
-
-    @Test
-    void 관리자_셀러_조회_비등록() {
-
-        SellerAuthReqDto dto = new SellerAuthReqDto(2,0);
-        List<Member> list =  memberService.getSellers(dto);
-
-        list.forEach(member -> System.out.println(member.getName()));
-        assertThat(list.size()).isGreaterThanOrEqualTo(0);
-
-    }
 }
