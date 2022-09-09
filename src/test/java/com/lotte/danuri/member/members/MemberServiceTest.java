@@ -3,11 +3,16 @@ package com.lotte.danuri.member.members;
 
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.SellerAuthReqDto;
-import org.junit.jupiter.api.Assertions;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @SpringBootTest
 @Transactional
@@ -25,11 +30,11 @@ public class MemberServiceTest {
 
         long result = memberService.updateMemberInfo(dto);
 
-        Assertions.assertEquals(memberId, result);
+        assertEquals(memberId, result);
     }
 
     @Test
-    void 판매자_등록수정삭제() {
+    void 관리자_셀러_등록수정삭제() {
 
         long memberId = 1L;
 
@@ -37,6 +42,28 @@ public class MemberServiceTest {
 
         long result = memberService.updateSellerAuth(dto);
 
-        Assertions.assertEquals(memberId, result);
+        assertEquals(memberId, result);
+    }
+
+    @Test
+    void 관리자_셀러_조회_등록() {
+
+        SellerAuthReqDto dto = new SellerAuthReqDto(2,1);
+        List<Member> list =  memberService.getSellers(dto);
+
+        list.forEach(member -> System.out.println(member.getName()));
+        assertThat(list.size()).isGreaterThanOrEqualTo(0);
+
+    }
+
+    @Test
+    void 관리자_셀러_조회_비등록() {
+
+        SellerAuthReqDto dto = new SellerAuthReqDto(2,0);
+        List<Member> list =  memberService.getSellers(dto);
+
+        list.forEach(member -> System.out.println(member.getName()));
+        assertThat(list.size()).isGreaterThanOrEqualTo(0);
+
     }
 }
