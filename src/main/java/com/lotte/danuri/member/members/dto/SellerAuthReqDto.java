@@ -16,6 +16,11 @@ public class SellerAuthReqDto {
     private int role;
     private int status;
 
+    public SellerAuthReqDto(int role, int status) {
+        this.role = role;
+        this.status = status;
+    }
+
     public void update(Member member) {
         member.updateStatus(status);
     }
