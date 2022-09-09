@@ -11,7 +11,7 @@ public interface MemberService {
 
     long updateSellerAuth(SellerAuthReqDto dto);
 
-    Optional<List<Member>> getSellers(SellerAuthReqDto dto);
+    List<Member> getSellers(SellerAuthReqDto dto);
 
 
 }
