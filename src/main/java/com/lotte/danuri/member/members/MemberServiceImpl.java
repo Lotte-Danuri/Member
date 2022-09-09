@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<Member> getSellers(SellerAuthReqDto dto) {
 
-        // role : 2 -> seller, status : 1 -> 등록, 0 -> 비등록(대기중)
+        // role : 2 -> seller, status : 1 -> 등록, 0 -> 비등록(대기중
         List<Member> memberList = memberRepository.findByRoleAndStatus(dto.getRole(), dto.getStatus())
                                                     .orElseGet(ArrayList::new);
         return memberList;
