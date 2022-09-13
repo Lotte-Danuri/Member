@@ -1,11 +1,16 @@
 package com.lotte.danuri.member.members;
 
+import com.lotte.danuri.member.likes.Likes;
+import com.lotte.danuri.member.likes.LikesService;
+import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/member")
 public class MemberController {
 
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
+    private final LikesService likesService;
 
     @PatchMapping("/info")
     public ResponseEntity<?> updateInfo(@RequestBody MemberInfoReqDto dto) {
@@ -46,12 +52,15 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/likes")
-    public ResponseEntity<?> getLikes(@RequestBody long memberId) {
+    @PostMapping("/likes")
+    public ResponseEntity<?> getLikes(@RequestBody LikesReqDto dto) {
+
+        List<Long> productList = likesService.getLikes(dto);
 
         // product 마이크로 서비스에서 상품 목록 조회
+        // in 조건절 써서 상품 아이디 리스트 보내면 상품 리스트 리턴받게
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
 
