@@ -4,14 +4,14 @@ import com.lotte.danuri.member.store.dto.StoreDto;
 
 public interface StoreService {
 
-    String register(StoreDto dto);
+    int register(StoreDto dto);
 
     StoreDto getStore(long sellerId);
 
-    String update(StoreDto dto);
+    int update(StoreDto dto);
 
-    String updateImage(StoreDto dto);
+    int updateImage(StoreDto dto);
 
-    String delete(long storeId);
+    int delete(long storeId);
 
 }

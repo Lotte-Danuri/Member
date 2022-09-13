@@ -30,9 +30,9 @@ public class StoreServiceTest {
             .score(0)
             .build();
 
-        String result = storeService.register(dto);
+        int result = storeService.register(dto);
 
-        assertThat(result).isEqualTo("스토어 등록이 완료되었습니다!");
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -48,9 +48,27 @@ public class StoreServiceTest {
             .score(0)
             .build();
 
-        String result = storeService.register(dto);
+        int result = storeService.register(dto);
 
-        assertThat(result).isEqualTo("스토어 이름이 중복됩니다. 다른 이름을 사용하세요.");
+        assertThat(result).isEqualTo(-1);
+    }
+
+    @Test
+    void 스토어_등록_실패_셀러권한없는경우() {
+
+        StoreDto dto = StoreDto.builder()
+            .sellerId(1)
+            .name("bbbb")
+            .address("서울특별시 홍대")
+            .description("bbbbbb")
+            .ownerName("bbb")
+            .ownerNumber("010-9999-2222")
+            .score(0)
+            .build();
+
+        int result = storeService.register(dto);
+
+        assertThat(result).isEqualTo(0);
     }
 
     @Test
@@ -77,10 +95,10 @@ public class StoreServiceTest {
             .ownerNumber("010-1111-1111")
             .build();
 
-        String result = storeService.update(dto);
+        int result = storeService.update(dto);
         StoreDto store = storeService.getStore(1);
 
-        assertThat(result).isEqualTo("수정 완료되었습니다!");
+        assertThat(result).isEqualTo(1);
         assertThat(store.getName()).isEqualTo("hello nikes~!~!~!~~!!~!!");
 
     }
@@ -97,9 +115,9 @@ public class StoreServiceTest {
             .ownerNumber("010-1111-1111")
             .build();
 
-        String result = storeService.update(dto);
+        int result = storeService.update(dto);
 
-        assertThat(result).isEqualTo("존재하지 않는 스토어 입니다.");
+        assertThat(result).isEqualTo(-1);
 
     }
 
@@ -108,9 +126,9 @@ public class StoreServiceTest {
 
         long storeId = 10;
 
-        String result = storeService.delete(storeId);
+        int result = storeService.delete(storeId);
 
-        assertThat(result).isEqualTo("스토어 삭제 완료되었습니다.");
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -118,8 +136,8 @@ public class StoreServiceTest {
 
         long storeId = 20;
 
-        String result = storeService.delete(storeId);
+        int result = storeService.delete(storeId);
 
-        assertThat(result).isEqualTo("존재하지 않거나 이미 삭제된 스토어입니다.");
+        assertThat(result).isEqualTo(0);
     }
 }

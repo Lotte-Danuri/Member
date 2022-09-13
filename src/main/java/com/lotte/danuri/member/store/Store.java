@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Builder
 public class Store extends BaseEntity {
 
@@ -39,6 +39,7 @@ public class Store extends BaseEntity {
 
     public StoreDto toDto() {
         return StoreDto.builder()
+            .id(getId())
             .sellerId(member.getId())
             .name(name)
             .address(address)
