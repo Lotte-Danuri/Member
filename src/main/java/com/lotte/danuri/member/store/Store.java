@@ -3,6 +3,7 @@ package com.lotte.danuri.member.store;
 import com.lotte.danuri.member.domain.BaseEntity;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.store.dto.StoreDto;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -37,6 +38,8 @@ public class Store extends BaseEntity {
 
     private String image;
 
+    private LocalDateTime deletedDate;
+
     public StoreDto toDto() {
         return StoreDto.builder()
             .id(getId())
@@ -57,5 +60,9 @@ public class Store extends BaseEntity {
         this.address = dto.getAddress();
         this.ownerName = dto.getOwnerName();
         this.ownerNumber = dto.getOwnerNumber();
+    }
+
+    public void delete() {
+        this.deletedDate = LocalDateTime.now();
     }
 }

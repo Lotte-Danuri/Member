@@ -6,9 +6,11 @@ import com.lotte.danuri.member.store.dto.StoreDto;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class StoreServiceImpl implements StoreService {
 
     private final StoreRepository storeRepository;
@@ -55,7 +57,6 @@ public class StoreServiceImpl implements StoreService {
         }else {
             Store store = findStore.get();
             store.update(dto);
-            storeRepository.save(store);
             return 1;
         }
 
@@ -80,7 +81,8 @@ public class StoreServiceImpl implements StoreService {
         if(storeRepository.findById(storeId).isEmpty()) {
             return 0;
         }else {
-            storeRepository.deleteById(storeId);
+            Store store = storeRepository.findById(storeId).orElseThrow();
+            store.delete();
             return 1;
         }
     }
