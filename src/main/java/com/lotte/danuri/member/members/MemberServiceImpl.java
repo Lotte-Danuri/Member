@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -20,7 +22,6 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findById(dto.getId()).orElseThrow();
         findMember.updateInfo(dto.getName(), dto.getAddress(), dto.getPhoneNumber());
 
-        Member updatedMember = memberRepository.save(findMember);
-        return updatedMember.getId();
+        return findMember.getId();
     }
 }
