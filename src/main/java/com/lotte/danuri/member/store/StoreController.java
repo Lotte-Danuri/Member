@@ -42,9 +42,9 @@ public class StoreController {
 
     // 이미지 수정 API 추후에 예정
 
-    @DeleteMapping()
+    @PatchMapping("/delete")
     public ResponseEntity<?> delete(@RequestBody StoreDto dto) {
-        // 상태로 삭제 관리 추가하기
+
         int result = storeService.delete(dto.getId());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
