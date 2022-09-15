@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum StoreErrorCode implements ErrorCode {
 
-    DUPLICATED_STORE_NAME(HttpStatus.BAD_REQUEST, "Duplicated Store Name")
+    DUPLICATED_STORE_NAME(HttpStatus.BAD_REQUEST, "Duplicated Store Name"),
+    NO_STORE_EXISTS(HttpStatus.NOT_FOUND, "Store is not existed")
     ;
 
     private final HttpStatus httpStatus;

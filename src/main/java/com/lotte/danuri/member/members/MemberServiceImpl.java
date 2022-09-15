@@ -1,5 +1,7 @@
 package com.lotte.danuri.member.members;
 
+import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
+import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.SellerAuthReqDto;
 import java.util.ArrayList;
@@ -19,7 +21,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public long updateMemberInfo(MemberInfoReqDto dto) {
 
-        Member findMember = memberRepository.findById(dto.getId()).orElseThrow();
+        Member findMember = memberRepository.findById(dto.getId()).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
+        );
         findMember.updateInfo(dto.getName(), dto.getAddress(), dto.getPhoneNumber());
 
         return findMember.getId();

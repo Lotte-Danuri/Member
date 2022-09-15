@@ -1,4 +1,4 @@
-package com.lotte.danuri.member.common.exception.hadlers;
+package com.lotte.danuri.member.common.exception.handlers;
 
 import com.lotte.danuri.member.common.exception.ErrorResponse;
 import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;

@@ -13,6 +13,7 @@ import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,18 +32,10 @@ public class CartServiceImpl implements CartService{
         memberRepository.findById(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS));
 
-        List<CartRespDto> resultList = new ArrayList<>();
-
-        cartRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new)
-            .forEach(cart -> {
-                CartRespDto respDto = CartRespDto.builder().productId(cart.getProductId())
-                    .quantity(cart.getQuantity()).build();
-
-                resultList.add(respDto);
-            });
-
-
-        return resultList;
+        return cartRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new)
+            .stream().map(cart ->
+                CartRespDto.builder().productId(cart.getProductId()).quantity(cart.getQuantity()).build()
+            ).collect(Collectors.toList());
     }
 
     @Override
@@ -50,7 +43,6 @@ public class CartServiceImpl implements CartService{
         Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
-
         cartRepository.save(dto.toEntity(member));
         return 1;
     }
