@@ -3,6 +3,7 @@ package com.lotte.danuri.member.likes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.likes.dto.LikesDeleteReqDto;
 import com.lotte.danuri.member.likes.dto.LikesInsertReqDto;
 import com.lotte.danuri.member.likes.dto.LikesReqDto;
@@ -58,8 +59,8 @@ public class LikesServiceTest {
             .build();
 
         assertThatThrownBy(() -> likesService.register(dto))
-            .isInstanceOf(NoSuchElementException.class);
-        //  .hasMessageContaining("해당 회원 정보가 없습니다.");
+            .isInstanceOf(NoMemberException.class)
+            .hasMessageContaining("Member is not Existed");
     }
 
     @Test

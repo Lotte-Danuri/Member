@@ -1,7 +1,12 @@
 package com.lotte.danuri.member.store;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.lotte.danuri.member.common.exception.exceptions.DuplicatedStoreNameException;
+import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationException;
+import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
+import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
 import com.lotte.danuri.member.store.dto.StoreDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,9 +53,9 @@ public class StoreServiceTest {
             .score(0)
             .build();
 
-        int result = storeService.register(dto);
-
-        assertThat(result).isEqualTo(-1);
+        assertThatThrownBy(() -> storeService.register(dto))
+            .isInstanceOf(DuplicatedStoreNameException.class)
+            .hasMessageContaining("Duplicated Store Name");
     }
 
     @Test
@@ -66,9 +71,10 @@ public class StoreServiceTest {
             .score(0)
             .build();
 
-        int result = storeService.register(dto);
+        assertThatThrownBy(() -> storeService.register(dto))
+            .isInstanceOf(NoAuthorizationException.class)
+            .hasMessageContaining("Seller is unauthorized");
 
-        assertThat(result).isEqualTo(0);
     }
 
     @Test
@@ -107,6 +113,7 @@ public class StoreServiceTest {
     void 스토어_정보_수정_실패() {
 
         StoreDto dto = StoreDto.builder()
+            .id(100)
             .sellerId(3)
             .name("hello nikes!!!!")
             .address("서울특별시 강남구")
@@ -115,9 +122,9 @@ public class StoreServiceTest {
             .ownerNumber("010-1111-1111")
             .build();
 
-        int result = storeService.update(dto);
-
-        assertThat(result).isEqualTo(-1);
+        assertThatThrownBy(() -> storeService.update(dto))
+            .isInstanceOf(NoStoreException.class)
+            .hasMessageContaining("Store is not existed");
 
     }
 
@@ -134,10 +141,10 @@ public class StoreServiceTest {
     @Test
     void 스토어_삭제_실패() {
 
-        long storeId = 20;
+        long storeId = 100;
 
-        int result = storeService.delete(storeId);
-
-        assertThat(result).isEqualTo(0);
+        assertThatThrownBy(() -> storeService.delete(storeId))
+            .isInstanceOf(NoStoreException.class)
+            .hasMessageContaining("Store is not existed");
     }
 }

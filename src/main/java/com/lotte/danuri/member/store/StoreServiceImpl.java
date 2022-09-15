@@ -1,5 +1,11 @@
 package com.lotte.danuri.member.store;
 
+import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
+import com.lotte.danuri.member.common.exception.codes.StoreErrorCode;
+import com.lotte.danuri.member.common.exception.exceptions.DuplicatedStoreNameException;
+import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationException;
+import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
+import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
 import com.lotte.danuri.member.store.dto.StoreDto;
@@ -20,12 +26,14 @@ public class StoreServiceImpl implements StoreService {
     public int register(StoreDto dto) {
 
         if(storeRepository.findByName(dto.getName()).isPresent()) {
-            return -1;
+            throw new DuplicatedStoreNameException(StoreErrorCode.DUPLICATED_STORE_NAME.getMessage(), StoreErrorCode.DUPLICATED_STORE_NAME);
         }else {
-            Member findMember = memberRepository.findById(dto.getSellerId()).orElseThrow();
+            Member findMember = memberRepository.findById(dto.getSellerId()).orElseThrow(
+                () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
+            );
 
             if(findMember.getStatus() == 0) {
-                return 0;
+                throw new NoAuthorizationException(MemberErrorCode.NO_AUTHORIZED_SELLER.getMessage(), MemberErrorCode.NO_AUTHORIZED_SELLER);
             }else {
                 Store store = dto.toEntity(findMember);
                 storeRepository.save(store);
@@ -46,14 +54,14 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public int update(StoreDto dto) {
 
-        if(memberRepository.findById(dto.getSellerId()).isEmpty()) {
-            return -1;
-        }
+        memberRepository.findById(dto.getSellerId()).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
+        );
 
         Optional<Store> findStore = storeRepository.findById(dto.getId());
 
         if(findStore.isEmpty()) {
-            return 0;
+            throw new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS);
         }else {
             Store store = findStore.get();
             store.update(dto);
@@ -68,7 +76,7 @@ public class StoreServiceImpl implements StoreService {
         Member findMember = memberRepository.findById(dto.getSellerId()).orElseThrow();
 
         if(storeRepository.findById(dto.getId()).isEmpty()) {
-            return 0;
+            throw new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS);
         }else {
             storeRepository.save(Store.builder().image(dto.getImage()).build());
             return 1;
@@ -79,9 +87,9 @@ public class StoreServiceImpl implements StoreService {
     public int delete(long storeId) {
 
         if(storeRepository.findById(storeId).isEmpty()) {
-            return 0;
+            throw new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS);
         }else {
-            Store store = storeRepository.findById(storeId).orElseThrow();
+            Store store = storeRepository.findById(storeId).get();
             store.delete();
             return 1;
         }

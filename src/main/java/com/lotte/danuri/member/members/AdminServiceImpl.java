@@ -1,9 +1,12 @@
 package com.lotte.danuri.member.members;
 
+import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
+import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.members.dto.SellerAuthReqDto;
 import com.lotte.danuri.member.members.dto.SellerRespDto;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +19,9 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public long updateSellerAuth(SellerAuthReqDto dto) {
 
-        Member findMember = memberRepository.findById(dto.getMemberId()).orElseThrow();
+        Member findMember = memberRepository.findById(dto.getMemberId()).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
+        );
         findMember.updateStatus(dto.getStatus());
 
         Member updatedMember = memberRepository.save(findMember);
@@ -30,11 +35,8 @@ public class AdminServiceImpl implements AdminService{
         List<Member> memberList = memberRepository.findByRoleAndStatus(dto.getRole(), dto.getStatus())
             .orElseGet(ArrayList::new);
 
-        List<SellerRespDto> resultList = new ArrayList<>();
-        memberList.forEach(m -> {
-            resultList.add(new SellerRespDto(m.getId(), m.getName()));
-        });
+        return memberList.stream().map(m -> new SellerRespDto(m.getId(), m.getName()))
+            .collect(Collectors.toList());
 
-        return resultList;
     }
 }
