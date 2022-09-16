@@ -23,11 +23,11 @@ public class AdminServiceTest {
     @Test
     void 관리자_셀러_등록수정삭제() {
 
-        long memberId = 1L;
+        Long memberId = 1L;
 
         SellerAuthReqDto dto = new SellerAuthReqDto(1L, 2, 1);
 
-        long result = adminService.updateSellerAuth(dto);
+        Long result = adminService.updateSellerAuth(dto);
 
         assertEquals(memberId, result);
     }
@@ -35,7 +35,7 @@ public class AdminServiceTest {
     @Test
     void 관리자_셀러_등록수정삭제_실패() {
 
-        SellerAuthReqDto dto = SellerAuthReqDto.builder().memberId(100).role(2).status(1).build();
+        SellerAuthReqDto dto = SellerAuthReqDto.builder().memberId(100L).role(2).status(1).build();
 
         assertThatThrownBy(() -> adminService.updateSellerAuth(dto))
             .isInstanceOf(NoMemberException.class)

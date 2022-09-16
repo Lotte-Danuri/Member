@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class LikesInsertReqDto {
 
-    private long memberId;
+    private Long memberId;
 
-    private long productId;
+    private Long productId;
 
     public Likes toEntity(Member member) {
         return Likes.builder()

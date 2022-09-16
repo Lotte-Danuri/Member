@@ -12,6 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class LikesDeleteReqDto {
 
-    private long id;
+    private Long id;
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberInfoReqDto {
 
-    private long id;
+    private Long id;
     private String name;
     private String address;
     private String phoneNumber;

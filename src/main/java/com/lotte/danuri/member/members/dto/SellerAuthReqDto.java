@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SellerAuthReqDto {
 
-    private long memberId;
+    private Long memberId;
     private int role;
     private int status;
 

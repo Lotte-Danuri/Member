@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartDeleteReqDto {
 
-    private long id;
+    private Long id;
 
 }

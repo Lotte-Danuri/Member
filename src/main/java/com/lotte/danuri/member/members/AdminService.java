@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AdminService {
 
-    long updateSellerAuth(SellerAuthReqDto dto);
+    Long updateSellerAuth(SellerAuthReqDto dto);
 
     List<SellerRespDto> getSellers(SellerAuthReqDto dto);
 }

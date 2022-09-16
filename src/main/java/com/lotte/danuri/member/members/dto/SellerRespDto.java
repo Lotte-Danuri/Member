@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class SellerRespDto {
 
-    private long id;
+    private Long id;
     private String name;
 
 }

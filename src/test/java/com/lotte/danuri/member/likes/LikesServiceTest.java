@@ -25,7 +25,7 @@ public class LikesServiceTest {
     void 찜_상품아이디_조회() {
 
         LikesReqDto dto = LikesReqDto.builder()
-            .memberId(4)
+            .memberId(4L)
             .build();
 
         List<Long> resultList = likesService.getLikes(dto);
@@ -37,10 +37,10 @@ public class LikesServiceTest {
     @Test
     void 상품_찜_등록_성공() {
 
-        long memberId = 4;
+        Long memberId = 4L;
         LikesInsertReqDto dto = LikesInsertReqDto.builder()
             .memberId(memberId)
-            .productId(1)
+            .productId(1L)
             .build();
 
         int result = likesService.register(dto);
@@ -52,10 +52,10 @@ public class LikesServiceTest {
     @Test
     void 상품_찜_등록_실패() {
 
-        long memberId = 100;
+        Long memberId = 100L;
         LikesInsertReqDto dto = LikesInsertReqDto.builder()
             .memberId(memberId)
-            .productId(2)
+            .productId(2L)
             .build();
 
         assertThatThrownBy(() -> likesService.register(dto))
@@ -67,7 +67,7 @@ public class LikesServiceTest {
     void 상품_찜_취소() {
 
         LikesDeleteReqDto dto = LikesDeleteReqDto.builder()
-            .id(6).build();
+            .id(6L).build();
 
         int result = likesService.delete(dto);
 
