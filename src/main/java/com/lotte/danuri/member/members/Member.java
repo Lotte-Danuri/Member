@@ -1,7 +1,14 @@
 package com.lotte.danuri.member.members;
 
 import com.lotte.danuri.member.domain.BaseEntity;
+import com.lotte.danuri.member.follow.Follow;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Member extends BaseEntity {
 
-    private long authId;
+    private Long authId;
 
     private String gender;
     private String phoneNumber;
@@ -21,6 +28,9 @@ public class Member extends BaseEntity {
     private int role;
     private int status;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Follow> followList;
+
     public void updateStatus(int status) {
         this.status = status;
     }
@@ -29,6 +39,12 @@ public class Member extends BaseEntity {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void updateFollows(Follow follow) {
+        if(!this.followList.contains(follow)) {
+            this.followList.add(follow);
+        }
     }
 
 }
