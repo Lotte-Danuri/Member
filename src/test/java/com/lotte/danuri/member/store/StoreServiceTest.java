@@ -26,13 +26,13 @@ public class StoreServiceTest {
     void 스토어_등록_성공() {
 
         StoreDto dto = StoreDto.builder()
-            .sellerId(2)
+            .sellerId(2L)
             .name("aaaaaaaaaaaaa")
             .address("서울특별시 중구")
             .description("aaaaaaaa")
             .ownerName("aaa")
             .ownerNumber("010-1133-1133")
-            .score(0)
+            .score(0.0)
             .build();
 
         int result = storeService.register(dto);
@@ -44,13 +44,13 @@ public class StoreServiceTest {
     void 스토어_등록_실패() {
 
         StoreDto dto = StoreDto.builder()
-            .sellerId(2)
+            .sellerId(2L)
             .name("adidas")
             .address("경기도 김포시")
             .description("아디다스 매장")
             .ownerName("문인태")
             .ownerNumber("010-1122-1122")
-            .score(0)
+            .score(0.0)
             .build();
 
         assertThatThrownBy(() -> storeService.register(dto))
@@ -62,13 +62,13 @@ public class StoreServiceTest {
     void 스토어_등록_실패_셀러권한없는경우() {
 
         StoreDto dto = StoreDto.builder()
-            .sellerId(1)
+            .sellerId(1L)
             .name("bbbb")
             .address("서울특별시 홍대")
             .description("bbbbbb")
             .ownerName("bbb")
             .ownerNumber("010-9999-2222")
-            .score(0)
+            .score(0.0)
             .build();
 
         assertThatThrownBy(() -> storeService.register(dto))
@@ -80,7 +80,7 @@ public class StoreServiceTest {
     @Test
     void 스토어_조회() {
 
-        long sellerId = 1;
+        Long sellerId = 1L;
 
         StoreDto storeDto = storeService.getStore(sellerId);
 
@@ -92,8 +92,8 @@ public class StoreServiceTest {
     void 스토어_정보_수정_성공() {
 
         StoreDto dto = StoreDto.builder()
-            .id(10)
-            .sellerId(1)
+            .id(10L)
+            .sellerId(1L)
             .name("hello nikes~!~!~!~~!!~!!")
             .address("서울특별시 강남구")
             .description("~~~!~!~!~!~!~!~!~!")
@@ -102,7 +102,7 @@ public class StoreServiceTest {
             .build();
 
         int result = storeService.update(dto);
-        StoreDto store = storeService.getStore(1);
+        StoreDto store = storeService.getStore(1L);
 
         assertThat(result).isEqualTo(1);
         assertThat(store.getName()).isEqualTo("hello nikes~!~!~!~~!!~!!");
@@ -113,8 +113,8 @@ public class StoreServiceTest {
     void 스토어_정보_수정_실패() {
 
         StoreDto dto = StoreDto.builder()
-            .id(100)
-            .sellerId(3)
+            .id(100L)
+            .sellerId(3L)
             .name("hello nikes!!!!")
             .address("서울특별시 강남구")
             .description("~~~!~!~!~!~!~!~!~!")
@@ -131,7 +131,7 @@ public class StoreServiceTest {
     @Test
     void 스토어_삭제_성공() {
 
-        long storeId = 10;
+        Long storeId = 10L;
 
         int result = storeService.delete(storeId);
 
@@ -141,7 +141,7 @@ public class StoreServiceTest {
     @Test
     void 스토어_삭제_실패() {
 
-        long storeId = 100;
+        Long storeId = 100L;
 
         assertThatThrownBy(() -> storeService.delete(storeId))
             .isInstanceOf(NoStoreException.class)

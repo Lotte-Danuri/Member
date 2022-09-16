@@ -24,11 +24,11 @@ public class MemberServiceTest {
     @Test
     void 회원정보수정() {
 
-        long memberId = 1L;
+        Long memberId = 1L;
 
         MemberInfoReqDto dto = new MemberInfoReqDto(1L, "안채영", "경기도 부천시", "01011111111");
 
-        long result = memberService.updateMemberInfo(dto);
+        Long result = memberService.updateMemberInfo(dto);
 
         assertEquals(memberId, result);
     }

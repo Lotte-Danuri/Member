@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CartUpdateReqDto {
 
-    private long id;
+    private Long id;
 
     private int quantity;
 

@@ -10,14 +10,15 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StoreDto {
 
-    private long id;
+    private Long id;
 
-    private long sellerId;
+    private Long sellerId;
 
     private String name;
 
@@ -31,13 +32,13 @@ public class StoreDto {
 
     private String image;
 
-    private double score;
+    private Double score;
 
     public Store toEntity(Member member) {
         return Store.builder()
             .member(member)
             .name(name)
-            .descrption(description)
+            .description(description)
             .address(address)
             .score(score)
             .ownerName(ownerName)

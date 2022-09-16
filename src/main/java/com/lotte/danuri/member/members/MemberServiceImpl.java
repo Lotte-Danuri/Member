@@ -3,6 +3,7 @@ package com.lotte.danuri.member.members;
 import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
+import com.lotte.danuri.member.members.dto.MemberRespDto;
 import com.lotte.danuri.member.members.dto.SellerAuthReqDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    public long updateMemberInfo(MemberInfoReqDto dto) {
+    public Long updateMemberInfo(MemberInfoReqDto dto) {
 
         Member findMember = memberRepository.findById(dto.getId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
@@ -27,5 +28,22 @@ public class MemberServiceImpl implements MemberService {
         findMember.updateInfo(dto.getName(), dto.getAddress(), dto.getPhoneNumber());
 
         return findMember.getId();
+    }
+
+    @Override
+    public MemberRespDto getMember(Long memberId) {
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
+        );
+
+        return MemberRespDto.builder()
+            .id(member.getId())
+            .name(member.getName())
+            .address(member.getAddress())
+            .age(member.getAge())
+            .phoneNumber(member.getPhoneNumber())
+            .build();
+
     }
 }

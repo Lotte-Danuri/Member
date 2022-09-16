@@ -11,9 +11,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CartInsertReqDto {
 
-    private long memberId;
+    private Long memberId;
 
-    private long productId;
+    private Long productId;
 
     private int quantity;
 

@@ -19,7 +19,7 @@ public class AdminController {
 
     @PatchMapping("/sellers")
     public ResponseEntity<?> manageSellers(@RequestBody SellerAuthReqDto dto) {
-        long updatedMemberId = adminService.updateSellerAuth(dto);
+        Long updatedMemberId = adminService.updateSellerAuth(dto);
 
         return new ResponseEntity<>(updatedMemberId, HttpStatus.OK);
     }

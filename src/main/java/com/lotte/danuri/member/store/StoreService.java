@@ -6,12 +6,12 @@ public interface StoreService {
 
     int register(StoreDto dto);
 
-    StoreDto getStore(long sellerId);
+    StoreDto getStore(Long sellerId);
 
     int update(StoreDto dto);
 
     int updateImage(StoreDto dto);
 
-    int delete(long storeId);
+    int delete(Long storeId);
 
 }

@@ -45,7 +45,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDto getStore(long sellerId) {
+    public StoreDto getStore(Long sellerId) {
         Store findStore = storeRepository.findByMemberId(sellerId).orElseGet(Store::new);
 
         return findStore.toDto();
@@ -84,7 +84,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public int delete(long storeId) {
+    public int delete(Long storeId) {
 
         if(storeRepository.findById(storeId).isEmpty()) {
             throw new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS);

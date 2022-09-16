@@ -12,6 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class LikesReqDto {
 
-    private long memberId;
+    private Long memberId;
 
 }

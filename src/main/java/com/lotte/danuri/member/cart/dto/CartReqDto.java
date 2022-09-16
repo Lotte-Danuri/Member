@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartReqDto {
 
-    private long memberId;
+    private Long memberId;
 
 }

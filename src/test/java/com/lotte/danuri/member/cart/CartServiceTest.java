@@ -25,7 +25,7 @@ public class CartServiceTest {
     @Test
     void 장바구니_상품_조회_성공() {
 
-        CartReqDto dto = CartReqDto.builder().memberId(4).build();
+        CartReqDto dto = CartReqDto.builder().memberId(4L).build();
 
         List<CartRespDto> resultList = cartService.getProductsOfCart(dto);
 
@@ -37,7 +37,7 @@ public class CartServiceTest {
     @Test
     void 장바구니_상품_조회_실패() {
 
-        CartReqDto dto = CartReqDto.builder().memberId(100).build();
+        CartReqDto dto = CartReqDto.builder().memberId(100L).build();
 
         assertThatThrownBy(() -> cartService.getProductsOfCart(dto))
             .isInstanceOf(NoMemberException.class)
@@ -47,7 +47,7 @@ public class CartServiceTest {
     @Test
     void 장바구니_상품_수량_수정_성공() {
 
-        CartUpdateReqDto dto = CartUpdateReqDto.builder().id(1).quantity(100).build();
+        CartUpdateReqDto dto = CartUpdateReqDto.builder().id(1L).quantity(100).build();
 
         int result = cartService.update(dto);
 
@@ -58,7 +58,7 @@ public class CartServiceTest {
     @Test
     void 장바구니_상품_수량_수정_실패() {
 
-        CartUpdateReqDto dto = CartUpdateReqDto.builder().id(10).build();
+        CartUpdateReqDto dto = CartUpdateReqDto.builder().id(10L).build();
 
         assertThatThrownBy(() -> cartService.update(dto))
             .isInstanceOf(NoResourceException.class)
@@ -68,7 +68,7 @@ public class CartServiceTest {
     @Test
     void 장바구니_상품_삭제_성공() {
 
-        CartDeleteReqDto dto = CartDeleteReqDto.builder().id(1).build();
+        CartDeleteReqDto dto = CartDeleteReqDto.builder().id(1L).build();
 
         int result = cartService.delete(dto);
 

@@ -10,6 +10,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class LikesRespDto {
 
-    private long productId;
+    private Long productId;
 
 }
