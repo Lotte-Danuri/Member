@@ -41,7 +41,7 @@ public class FollowServiceImpl implements FollowService {
             () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS)
         );
 
-        if (followRepository.findByMemberIdAndStoreId(member.getId(), store.getId()).isPresent()) {
+        if (followRepository.findByMemberIdAndStoreIdAndDeletedDateIsNull(member.getId(), store.getId()).isPresent()) {
             return 0;
         }
 

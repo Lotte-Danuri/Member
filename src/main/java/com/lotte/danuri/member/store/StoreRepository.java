@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-    Optional<Store> findByMemberId(Long memberId);
+    Optional<Store> findByMemberIdAndDeletedDateIsNull(Long memberId);
 
-    Optional<Store> findByName(String name);
+    Optional<Store> findByNameAndDeletedDateIsNull(String name);
 
     Optional<List<Store>> findByIdIn(List<Long> storeIds);
 

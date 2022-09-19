@@ -10,6 +10,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     Optional<List<Follow>> findByStoreId(Long storeId);
 
-    Optional<Follow> findByMemberIdAndStoreId(Long memberId, Long storeId);
+    Optional<Follow> findByMemberIdAndStoreIdAndDeletedDateIsNull(Long memberId, Long storeId);
 
 }

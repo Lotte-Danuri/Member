@@ -25,7 +25,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public int register(StoreDto dto) {
 
-        if(storeRepository.findByName(dto.getName()).isPresent()) {
+        if(storeRepository.findByNameAndDeletedDateIsNull(dto.getName()).isPresent()) {
             throw new DuplicatedStoreNameException(StoreErrorCode.DUPLICATED_STORE_NAME.getMessage(), StoreErrorCode.DUPLICATED_STORE_NAME);
         }else {
             Member findMember = memberRepository.findById(dto.getSellerId()).orElseThrow(
@@ -46,7 +46,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public StoreDto getStore(Long sellerId) {
-        Store findStore = storeRepository.findByMemberId(sellerId).orElseGet(Store::new);
+        Store findStore = storeRepository.findByMemberIdAndDeletedDateIsNull(sellerId).orElseGet(Store::new);
 
         return findStore.toDto();
     }
