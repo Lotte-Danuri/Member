@@ -15,4 +15,6 @@ public interface MyCouponService {
     int updateStatus(Long myCouponId, int status);
 
     int delete(Long myCouponId);
+
+    int deleteAllByMember(Long memberId);
 }

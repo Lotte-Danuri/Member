@@ -22,11 +22,11 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class Follow extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STORE_ID")
     private Store store;
 

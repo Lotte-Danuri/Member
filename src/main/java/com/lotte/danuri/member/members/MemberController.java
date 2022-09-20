@@ -1,9 +1,13 @@
 package com.lotte.danuri.member.members;
 
+import com.lotte.danuri.member.cart.CartService;
+import com.lotte.danuri.member.coupon.MyCouponService;
+import com.lotte.danuri.member.follow.FollowService;
 import com.lotte.danuri.member.likes.Likes;
 import com.lotte.danuri.member.likes.LikesService;
 import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
+import com.lotte.danuri.member.members.dto.MemberReqDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,9 @@ public class MemberController {
 
     private final MemberService memberService;
     private final LikesService likesService;
+    private final CartService cartService;
+    private final MyCouponService myCouponService;
+    private final FollowService followService;
 
     @PatchMapping("/info")
     public ResponseEntity<?> updateInfo(@RequestBody MemberInfoReqDto dto) {
@@ -63,6 +70,19 @@ public class MemberController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
+    @PatchMapping("/deletes")
+    public ResponseEntity<?> delete(@RequestBody MemberReqDto dto) {
+
+        Long memberId = dto.getMemberId();
+
+        memberService.delete(memberId);
+        cartService.deleteAllByMember(memberId);
+        myCouponService.deleteAllByMember(memberId);
+        followService.deleteAllByMember(memberId);
+        likesService.deleteAllByMember(memberId);
+
+        return new ResponseEntity<>("회원 탈퇴 완료", HttpStatus.OK);
+    }
 
 
 }

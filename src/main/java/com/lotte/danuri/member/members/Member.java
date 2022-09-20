@@ -2,15 +2,21 @@ package com.lotte.danuri.member.members;
 
 import com.lotte.danuri.member.domain.BaseEntity;
 import com.lotte.danuri.member.follow.Follow;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.data.jpa.repository.Query;
 
 @Entity(name="member")
 @Getter
@@ -28,6 +34,9 @@ public class Member extends BaseEntity {
     private int role;
     private int status;
 
+    private LocalDateTime deletedDate;
+
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follow> followList;
 
@@ -45,6 +54,10 @@ public class Member extends BaseEntity {
         if(!this.followList.contains(follow)) {
             this.followList.add(follow);
         }
+    }
+
+    public void delete() {
+        this.deletedDate = LocalDateTime.now();
     }
 
 }

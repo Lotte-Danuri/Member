@@ -49,5 +49,11 @@ public class LikesServiceImpl implements LikesService{
         return 1;
     }
 
+    @Override
+    public int deleteAllByMember(Long memberId) {
+        likesRepository.deleteAllByMemberId(memberId);
+        return 1;
+    }
+
 
 }

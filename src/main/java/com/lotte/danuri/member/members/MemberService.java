@@ -12,4 +12,6 @@ public interface MemberService {
 
     MemberRespDto getMember(Long memberId);
 
+    int delete(Long memberId);
+
 }

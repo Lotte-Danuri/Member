@@ -81,4 +81,12 @@ public class MyCouponServiceImpl implements MyCouponService {
         coupon.delete();
         return 1;
     }
+
+    @Override
+    public int deleteAllByMember(Long memberId) {
+        myCouponRepository.findByMemberIdAndDeletedDateIsNull(memberId).orElseGet(ArrayList::new)
+            .forEach(MyCoupon::delete);
+
+        return 1;
+    }
 }

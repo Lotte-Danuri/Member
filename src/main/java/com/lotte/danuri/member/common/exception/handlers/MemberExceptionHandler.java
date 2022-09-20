@@ -3,6 +3,7 @@ package com.lotte.danuri.member.common.exception.handlers;
 import com.lotte.danuri.member.common.exception.ErrorResponse;
 import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationException;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
+import com.lotte.danuri.member.common.exception.exceptions.SellerStoreExistedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,13 @@ public class MemberExceptionHandler {
     @ExceptionHandler(NoMemberException.class)
     public ResponseEntity<?> handleNoMemberException(NoMemberException e) {
         log.error("handleNoMemberException", e);
+        ErrorResponse response = new ErrorResponse(e.getErrorCode());
+        return new ResponseEntity<>(response, e.getErrorCode().getHttpStatus());
+    }
+
+    @ExceptionHandler(SellerStoreExistedException.class)
+    public ResponseEntity<?> handleSellerStoreExistedException(SellerStoreExistedException e) {
+        log.error("handleSellerStoreExistedException", e);
         ErrorResponse response = new ErrorResponse(e.getErrorCode());
         return new ResponseEntity<>(response, e.getErrorCode().getHttpStatus());
     }
