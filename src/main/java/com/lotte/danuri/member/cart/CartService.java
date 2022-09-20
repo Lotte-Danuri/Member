@@ -17,4 +17,6 @@ public interface CartService {
 
     int delete(CartDeleteReqDto dto);
 
+    int deleteAllByMember(Long memberId);
+
 }

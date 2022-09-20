@@ -13,4 +13,6 @@ public interface LikesService {
 
     int delete(LikesDeleteReqDto dto);
 
+    int deleteAllByMember(Long memberId);
+
 }

@@ -61,4 +61,10 @@ public class CartServiceImpl implements CartService{
         cartRepository.deleteById(dto.getId());
         return 1;
     }
+
+    @Override
+    public int deleteAllByMember(Long memberId) {
+        cartRepository.deleteAllByMemberId(memberId);
+        return 1;
+    }
 }
