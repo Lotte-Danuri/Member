@@ -14,6 +14,8 @@ public interface FollowService {
 
     int delete(FollowDto dto);
 
+    int deleteAllByMember(Long memberId);
+
     List<Long> getMembersByFollow(Long storeId);
 
 }

@@ -93,6 +93,13 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
+    public int deleteAllByMember(Long memberId) {
+        followRepository.findByMemberIdAndDeletedDateIsNull(memberId).orElseGet(ArrayList::new)
+            .forEach(Follow::delete);
+        return 1;
+    }
+
+    @Override
     public List<Long> getMembersByFollow(Long storeId) {
 
         Store store = storeRepository.findById(storeId).orElseThrow(
