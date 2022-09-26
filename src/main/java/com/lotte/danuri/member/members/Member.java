@@ -36,6 +36,12 @@ public class Member extends BaseEntity {
 
     private LocalDateTime deletedDate;
 
+    private int memberShipRank;
+
+    private LocalDateTime registeredDate;
+
+    private LocalDateTime expiredDate;
+
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follow> followList;
@@ -58,6 +64,12 @@ public class Member extends BaseEntity {
 
     public void delete() {
         this.deletedDate = LocalDateTime.now();
+    }
+
+    public void updateMemberShip(int rank) {
+        this.memberShipRank = rank;
+        this.registeredDate = LocalDateTime.now();
+        this.expiredDate = LocalDateTime.now().plusYears(1);
     }
 
 }
