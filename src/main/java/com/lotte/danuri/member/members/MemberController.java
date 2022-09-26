@@ -8,6 +8,7 @@ import com.lotte.danuri.member.likes.LikesService;
 import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.MemberReqDto;
+import com.lotte.danuri.member.members.dto.MembershipUpdateDto;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -89,6 +90,31 @@ public class MemberController {
         likesService.deleteAllByMember(memberId);
 
         return new ResponseEntity<>("회원 탈퇴 완료", HttpStatus.OK);
+    }
+
+    @PatchMapping("/membership")
+    @ApiOperation(value = "멤버쉽 가입/등급수정", notes = "멤버쉽을 가입 또는 등급 수정")
+    public ResponseEntity<?> updateMembership(@RequestBody MembershipUpdateDto dto) {
+
+        Long price = dto.getTotalOrderPrice();
+        String rank;
+
+        if(price == 0) {
+            memberService.updateMemberShip(dto.getMemberId(), 1);
+            rank = "일반";
+        }else if(price >= 100000000) {
+            memberService.updateMemberShip(dto.getMemberId(), 4);
+            rank = "VVIP";
+        }else if(price >= 50000000) {
+            memberService.updateMemberShip(dto.getMemberId(), 3);
+            rank = "SVIP";
+        }else {
+            memberService.updateMemberShip(dto.getMemberId(), 2);
+            rank = "VIP";
+        }
+
+        return new ResponseEntity<>(rank, HttpStatus.OK);
+
     }
 
 

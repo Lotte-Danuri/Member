@@ -14,4 +14,6 @@ public interface MemberService {
 
     int delete(Long memberId);
 
+    Long updateMemberShip(Long memberId, int rank);
+
 }
