@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -35,10 +36,6 @@ public class Store extends BaseEntity {
 
     private String address;
 
-    private Double score;
-
-    private String ownerName;
-
     private String ownerNumber;
 
     private String image;
@@ -48,6 +45,10 @@ public class Store extends BaseEntity {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follow> followList;
 
+    @ManyToOne
+    @JoinColumn(name = "BRAND_ID")
+    private Brand brand;
+
     public StoreDto toDto() {
         return StoreDto.builder()
             .id(getId())
@@ -55,10 +56,8 @@ public class Store extends BaseEntity {
             .name(name)
             .address(address)
             .description(description)
-            .ownerName(ownerName)
             .ownerNumber(ownerNumber)
             .image(image)
-            .score(score)
             .build();
     }
 
@@ -66,7 +65,6 @@ public class Store extends BaseEntity {
         this.name = dto.getName();
         this.description = dto.getDescription();
         this.address = dto.getAddress();
-        this.ownerName = dto.getOwnerName();
         this.ownerNumber = dto.getOwnerNumber();
     }
 
