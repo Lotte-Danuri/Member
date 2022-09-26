@@ -33,4 +33,14 @@ public class MemberServiceTest {
         assertEquals(memberId, result);
     }
 
+    @Test
+    void 멤버쉽_가입_등급설정() {
+
+        Long memberId = 6L;
+
+        Long result = memberService.updateMemberShip(memberId, 2);
+
+        assertEquals(memberId, result);
+    }
+
 }

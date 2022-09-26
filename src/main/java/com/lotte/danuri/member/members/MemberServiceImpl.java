@@ -68,4 +68,17 @@ public class MemberServiceImpl implements MemberService {
 
         return 0;
     }
+
+    @Override
+    public Long updateMemberShip(Long memberId, int rank) {
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
+        );
+
+        member.updateMemberShip(rank);
+
+        return member.getId();
+    }
+
 }
