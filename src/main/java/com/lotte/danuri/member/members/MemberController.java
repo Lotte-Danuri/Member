@@ -8,6 +8,7 @@ import com.lotte.danuri.member.likes.LikesService;
 import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.MemberReqDto;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,11 +32,13 @@ public class MemberController {
     private final FollowService followService;
 
     @PatchMapping("/info")
+    @ApiOperation(value = "회원 수정", notes = "회원의 개인정보 수정")
     public ResponseEntity<?> updateInfo(@RequestBody MemberInfoReqDto dto) {
         return new ResponseEntity<>(memberService.updateMemberInfo(dto), HttpStatus.OK);
     }
 
     @GetMapping("/products")
+    @ApiOperation(value = "구매 목록 조회", notes = "회원의 구매 목록 조회")
     public ResponseEntity<?> getPurchases() {
 
         // Order 마이크로 서비스 사용
@@ -44,6 +47,7 @@ public class MemberController {
     }
 
     @GetMapping("/products/detail")
+    @ApiOperation(value = "상품 상세 조회", notes = "회원의 구매 목록의 상품 상세 조회")
     public ResponseEntity<?> getDetailOfPurchases() {
 
         // Order 마이크로 서비스 사용
@@ -52,6 +56,7 @@ public class MemberController {
     }
 
     @GetMapping("/orders")
+    @ApiOperation(value = "주문 조회", notes = "상품 주문 내역 상태별 조회")
     public ResponseEntity<?> getOrdersByStatus() {
 
         // Order 마이크로 서비스 사용 - 주문 상태 조회
@@ -60,6 +65,7 @@ public class MemberController {
     }
 
     @PostMapping("/likes")
+    @ApiOperation(value = "좋아요 상품 조회", notes = "회원의 좋아요한 상품 조회")
     public ResponseEntity<?> getLikes(@RequestBody LikesReqDto dto) {
 
         List<Long> productList = likesService.getLikes(dto);
@@ -71,6 +77,7 @@ public class MemberController {
     }
 
     @PatchMapping("/deletes")
+    @ApiOperation(value = "회원 삭제", notes = "탈퇴에 의한 회원 삭제")
     public ResponseEntity<?> delete(@RequestBody MemberReqDto dto) {
 
         Long memberId = dto.getMemberId();

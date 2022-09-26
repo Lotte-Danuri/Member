@@ -4,6 +4,7 @@ import com.lotte.danuri.member.cart.dto.CartDeleteReqDto;
 import com.lotte.danuri.member.cart.dto.CartInsertReqDto;
 import com.lotte.danuri.member.cart.dto.CartReqDto;
 import com.lotte.danuri.member.cart.dto.CartUpdateReqDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,21 +24,25 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping()
+    @ApiOperation(value = "상품 조회", notes = "장바구니에 담겨있는 상품 조회")
     public ResponseEntity<?> getProductsOfCart(@RequestBody CartReqDto dto) {
         return new ResponseEntity<>(cartService.getProductsOfCart(dto), HttpStatus.OK);
     }
 
     @PostMapping()
+    @ApiOperation(value = "상품 등록", notes = "장바구니에 상품 추가")
     public ResponseEntity<?> register(@RequestBody CartInsertReqDto dto) {
         return new ResponseEntity<>(cartService.register(dto), HttpStatus.OK);
     }
 
     @PatchMapping()
+    @ApiOperation(value = "상품 수량 수정", notes = "장바구니에 담긴 상품의 주문 수량을 수정")
     public ResponseEntity<?> update(@RequestBody CartUpdateReqDto dto) {
         return new ResponseEntity<>(cartService.update(dto), HttpStatus.OK);
     }
 
     @DeleteMapping()
+    @ApiOperation(value = "상품 삭제", notes = "장바구니의 상품 삭제")
     public ResponseEntity<?> delete(@RequestBody CartDeleteReqDto dto) {
         return new ResponseEntity<>(cartService.delete(dto), HttpStatus.OK);
     }
