@@ -26,13 +26,10 @@ public class StoreDto {
 
     private String address;
 
-    private String ownerName;
 
     private String ownerNumber;
 
     private String image;
-
-    private Double score;
 
     public Store toEntity(Member member) {
         return Store.builder()
@@ -40,8 +37,6 @@ public class StoreDto {
             .name(name)
             .description(description)
             .address(address)
-            .score(score)
-            .ownerName(ownerName)
             .ownerNumber(ownerNumber)
             .image(image)
             .build();
