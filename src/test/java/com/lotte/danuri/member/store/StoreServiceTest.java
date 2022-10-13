@@ -30,9 +30,7 @@ public class StoreServiceTest {
             .name("aaaaaaaaaaaaa")
             .address("서울특별시 중구")
             .description("aaaaaaaa")
-            .ownerName("aaa")
             .ownerNumber("010-1133-1133")
-            .score(0.0)
             .build();
 
         int result = storeService.register(dto);
@@ -48,9 +46,7 @@ public class StoreServiceTest {
             .name("adidas")
             .address("경기도 김포시")
             .description("아디다스 매장")
-            .ownerName("문인태")
             .ownerNumber("010-1122-1122")
-            .score(0.0)
             .build();
 
         assertThatThrownBy(() -> storeService.register(dto))
@@ -66,9 +62,7 @@ public class StoreServiceTest {
             .name("bbbb")
             .address("서울특별시 홍대")
             .description("bbbbbb")
-            .ownerName("bbb")
             .ownerNumber("010-9999-2222")
-            .score(0.0)
             .build();
 
         assertThatThrownBy(() -> storeService.register(dto))
@@ -97,7 +91,6 @@ public class StoreServiceTest {
             .name("hello nikes~!~!~!~~!!~!!")
             .address("서울특별시 강남구")
             .description("~~~!~!~!~!~!~!~!~!")
-            .ownerName("안채영")
             .ownerNumber("010-1111-1111")
             .build();
 
@@ -118,7 +111,6 @@ public class StoreServiceTest {
             .name("hello nikes!!!!")
             .address("서울특별시 강남구")
             .description("~~~!~!~!~!~!~!~!~!")
-            .ownerName("안채영")
             .ownerNumber("010-1111-1111")
             .build();
 
