@@ -33,7 +33,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public int register(FollowDto dto) {
 
-        Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 
@@ -53,7 +53,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public List<StoreDto> getStoresByFollow(Long memberId) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(
+        Member member = memberRepository.findByIdAndFollow(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 
@@ -73,7 +73,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public int delete(FollowDto dto) {
 
-        Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 

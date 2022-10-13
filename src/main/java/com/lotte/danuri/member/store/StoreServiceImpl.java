@@ -28,7 +28,7 @@ public class StoreServiceImpl implements StoreService {
         if(storeRepository.findByNameAndDeletedDateIsNull(dto.getName()).isPresent()) {
             throw new DuplicatedStoreNameException(StoreErrorCode.DUPLICATED_STORE_NAME.getMessage(), StoreErrorCode.DUPLICATED_STORE_NAME);
         }else {
-            Member findMember = memberRepository.findById(dto.getSellerId()).orElseThrow(
+            Member findMember = memberRepository.findByIdAndDeletedDateIsNull(dto.getSellerId()).orElseThrow(
                 () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
             );
 
@@ -54,7 +54,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public int update(StoreDto dto) {
 
-        memberRepository.findById(dto.getSellerId()).orElseThrow(
+        memberRepository.findByIdAndDeletedDateIsNull(dto.getSellerId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 
@@ -73,7 +73,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public int updateImage(StoreDto dto) {
 
-        Member findMember = memberRepository.findById(dto.getSellerId()).orElseThrow();
+        Member findMember = memberRepository.findByIdAndDeletedDateIsNull(dto.getSellerId()).orElseThrow();
 
         if(storeRepository.findById(dto.getId()).isEmpty()) {
             throw new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS);

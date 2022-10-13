@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public List<CartRespDto> getProductsOfCart(CartReqDto dto) {
 
-        memberRepository.findById(dto.getMemberId()).orElseThrow(
+        memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS));
 
         return cartRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new)
@@ -40,7 +40,7 @@ public class CartServiceImpl implements CartService{
 
     @Override
     public int register(CartInsertReqDto dto) {
-        Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
         cartRepository.save(dto.toEntity(member));
