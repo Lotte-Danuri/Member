@@ -6,24 +6,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.springframework.data.jpa.repository.Query;
 
 @Entity(name="member")
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member extends BaseEntity {
-
-    private Long authId;
 
     private String gender;
     private String phoneNumber;
