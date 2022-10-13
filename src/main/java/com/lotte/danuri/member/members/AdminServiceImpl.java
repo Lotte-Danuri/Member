@@ -19,7 +19,7 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public Long updateSellerAuth(SellerAuthReqDto dto) {
 
-        Member findMember = memberRepository.findById(dto.getMemberId()).orElseThrow(
+        Member findMember = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
         findMember.updateStatus(dto.getStatus());

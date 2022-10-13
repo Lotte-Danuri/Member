@@ -26,7 +26,6 @@ public class StoreDto {
 
     private String address;
 
-
     private String ownerNumber;
 
     private String image;

@@ -9,6 +9,7 @@ import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.MemberReqDto;
 import com.lotte.danuri.member.members.dto.MembershipUpdateDto;
+import com.lotte.danuri.member.members.dto.SignUpDto;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/")
 public class MemberController {
 
     private final MemberService memberService;
@@ -31,6 +32,12 @@ public class MemberController {
     private final CartService cartService;
     private final MyCouponService myCouponService;
     private final FollowService followService;
+
+    @PostMapping("/members")
+    @ApiOperation(value = "회원 정보 등록", notes = "회원 가입 후 정보 저장")
+    public ResponseEntity<?> save(@RequestBody SignUpDto dto) {
+        return new ResponseEntity<>(memberService.register(dto), HttpStatus.CREATED);
+    }
 
     @PatchMapping("/info")
     @ApiOperation(value = "회원 수정", notes = "회원의 개인정보 수정")
@@ -116,6 +123,4 @@ public class MemberController {
         return new ResponseEntity<>(rank, HttpStatus.OK);
 
     }
-
-
 }

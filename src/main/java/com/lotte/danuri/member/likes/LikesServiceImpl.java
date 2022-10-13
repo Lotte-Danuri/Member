@@ -32,7 +32,7 @@ public class LikesServiceImpl implements LikesService{
 
     @Override
     public int register(LikesInsertReqDto dto) {
-        Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 

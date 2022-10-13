@@ -19,5 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             + "AND m.deletedDate is null "
             + "AND f.deletedDate is null "
     )
-    Optional<Member> findById(Long memberId);
+    Optional<Member> findByIdAndFollow(Long memberId);
+
+    Optional<Member> findByIdAndDeletedDateIsNull(Long memberId);
 }
