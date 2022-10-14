@@ -1,4 +1,17 @@
+server:
+  port: 0
+
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ssd018.synology.me:8806/member?serverTimezone=UTC&characterEncoding=UTF-8
+    username: member
+    password: Asdf123!@#
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5Dialect
   application:
     name: member
   main:
@@ -7,8 +20,18 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, beans, busrefresh
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://43.200.203.135:8761/eureka
+
+gateway:
+  ip: 43.200.203.135
+
+a:
+  value: aaaaaaaa
+
