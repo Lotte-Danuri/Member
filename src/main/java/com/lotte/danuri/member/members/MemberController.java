@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,6 +38,12 @@ public class MemberController {
     @ApiOperation(value = "회원 정보 등록", notes = "회원 가입 후 정보 저장")
     public ResponseEntity<?> save(@RequestBody SignUpDto dto) {
         return new ResponseEntity<>(memberService.register(dto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/members")
+    @ApiOperation(value = "회원 정보 조회", notes = "회원 가입 후 정보 조회")
+    public ResponseEntity<?> getName(@RequestHeader String memberId) {
+        return new ResponseEntity<>(memberService.getMember(Long.parseLong(memberId)), HttpStatus.OK);
     }
 
     @PatchMapping("/info")
@@ -72,7 +79,7 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/likes")
+    @PostMapping("/like")
     @ApiOperation(value = "좋아요 상품 조회", notes = "회원의 좋아요한 상품 조회")
     public ResponseEntity<?> getLikes(@RequestBody LikesReqDto dto) {
 
