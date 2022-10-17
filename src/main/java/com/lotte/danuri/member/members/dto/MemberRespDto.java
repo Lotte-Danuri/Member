@@ -21,4 +21,6 @@ public class MemberRespDto {
 
     private int role;
 
+    private String birthDate;
+
 }

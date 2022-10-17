@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
             .id(member.getId())
             .name(member.getName())
             .address(member.getAddress())
-            .age(member.getAge())
+            .birthDate(member.getBirthDate())
             .phoneNumber(member.getPhoneNumber())
             .build();
 
