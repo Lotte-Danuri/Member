@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,5 +56,16 @@ public class StoreController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("/{storeId}")
+    @ApiOperation(value = "스토어 이름 조회", notes = "스토어 이름을 조회")
+    public ResponseEntity<?> getNames(@PathVariable(name = "storeId") Long storeId) {
+        return new ResponseEntity<>(storeService.getName(storeId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{brandId}")
+    @ApiOperation(value = "스토어 id 조회", notes = "브랜드로 스토어 아이디 조회")
+    public ResponseEntity<?> getStoreId(@PathVariable(name = "brandId") Long brandId) {
+        return new ResponseEntity<>(storeService.getStoreId(brandId), HttpStatus.OK);
+    }
 
 }
