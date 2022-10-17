@@ -8,6 +8,7 @@ import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationExcept
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
 import com.lotte.danuri.member.store.dto.StoreDto;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -138,5 +139,27 @@ public class StoreServiceTest {
         assertThatThrownBy(() -> storeService.delete(storeId))
             .isInstanceOf(NoStoreException.class)
             .hasMessageContaining("Store is not existed");
+    }
+
+    @Test
+    void 스토어_이름_조회() {
+
+        Long storeId = 1L;
+
+        String name = storeService.getName(storeId);
+
+        assertThat(name).isEqualTo("강남점");
+
+    }
+
+    @Test
+    void 스토어_아이디_조회_브랜드아이디로() {
+
+        Long brandId = 1L;
+
+        List<Long> stores = storeService.getStoreId(brandId);
+
+        stores.forEach(System.out::println);
+        assertThat(stores.size()).isGreaterThanOrEqualTo(0);
     }
 }

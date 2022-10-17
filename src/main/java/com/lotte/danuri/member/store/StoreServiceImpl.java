@@ -6,10 +6,13 @@ import com.lotte.danuri.member.common.exception.exceptions.DuplicatedStoreNameEx
 import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationException;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
+import com.lotte.danuri.member.domain.BaseEntity;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
 import com.lotte.danuri.member.store.dto.StoreDto;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,8 +48,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDto getStore(Long sellerId) {
-        Store findStore = storeRepository.findByMemberIdAndDeletedDateIsNull(sellerId).orElseGet(Store::new);
+    public StoreDto getStore(Long storeId) {
+        Store findStore = storeRepository.findByMemberIdAndDeletedDateIsNull(storeId).orElseGet(Store::new);
 
         return findStore.toDto();
     }
@@ -93,5 +96,26 @@ public class StoreServiceImpl implements StoreService {
             store.delete();
             return 1;
         }
+    }
+
+    @Override
+    public String getName(Long storeId) {
+        Store store = storeRepository.findByIdAndDeletedDateIsNull(storeId).orElseThrow(
+            () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(),
+                StoreErrorCode.NO_STORE_EXISTS)
+        );
+
+        return store.getName();
+    }
+
+    @Override
+    public List<Long> getStoreId(Long brandId) {
+        List<Store> stores = storeRepository.findByBrandIdAndDeletedDateIsNull(brandId).orElseThrow(
+            () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(),
+                StoreErrorCode.NO_STORE_EXISTS)
+        );
+
+        return stores.stream().map(BaseEntity::getId).collect(Collectors.toList());
+
     }
 }
