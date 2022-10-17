@@ -22,4 +22,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     )
     Optional<Store> findById(Long storeId);
 
+    Optional<Store> findByIdAndDeletedDateIsNull(Long id);
+
+    Optional<List<Store>> findByBrandIdAndDeletedDateIsNull(Long brandId);
+
 }
