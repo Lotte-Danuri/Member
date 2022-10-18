@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CartService {
 
-    List<CartListRespDto> getProductsOfCart(CartReqDto dto);
+    List<CartListRespDto> getProductsOfCart(Long memberId);
 
     int register(CartInsertReqDto dto);
 
