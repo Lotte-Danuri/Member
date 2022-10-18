@@ -5,6 +5,10 @@ import com.lotte.danuri.member.cart.dto.CartInsertReqDto;
 import com.lotte.danuri.member.cart.dto.CartReqDto;
 import com.lotte.danuri.member.cart.dto.CartRespDto;
 import com.lotte.danuri.member.cart.dto.CartUpdateReqDto;
+import com.lotte.danuri.member.client.ProductClient;
+import com.lotte.danuri.member.client.dto.CartListRespDto;
+import com.lotte.danuri.member.client.dto.ProductDto;
+import com.lotte.danuri.member.client.dto.ProductListDto;
 import com.lotte.danuri.member.common.exception.codes.CommonErrorCode;
 import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
@@ -25,17 +29,31 @@ public class CartServiceImpl implements CartService{
 
     private final CartRepository cartRepository;
     private final MemberRepository memberRepository;
+    private final ProductClient productClient;
 
     @Override
-    public List<CartRespDto> getProductsOfCart(CartReqDto dto) {
+    public List<CartListRespDto> getProductsOfCart(CartReqDto dto) {
 
         memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS));
 
-        return cartRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new)
-            .stream().map(cart ->
-                CartRespDto.builder().productId(cart.getProductId()).quantity(cart.getQuantity()).build()
-            ).collect(Collectors.toList());
+        List<Cart> resultList =
+            cartRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new);
+
+        List<Long> productList = resultList.stream().map(Cart::getProductId).toList();
+
+        List<ProductDto> result =
+            productClient.getProducts(ProductListDto.builder().productId(productList).build());
+
+        List<CartListRespDto> cartList = new ArrayList<>();
+        for(Cart c : resultList) {
+            for(ProductDto d : result) {
+                cartList.add(CartListRespDto.builder().quantity(c.getQuantity()).productDto(d).build());
+            }
+        }
+
+        return cartList;
+
     }
 
     @Override

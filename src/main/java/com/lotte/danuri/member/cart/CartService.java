@@ -5,11 +5,12 @@ import com.lotte.danuri.member.cart.dto.CartInsertReqDto;
 import com.lotte.danuri.member.cart.dto.CartReqDto;
 import com.lotte.danuri.member.cart.dto.CartRespDto;
 import com.lotte.danuri.member.cart.dto.CartUpdateReqDto;
+import com.lotte.danuri.member.client.dto.CartListRespDto;
 import java.util.List;
 
 public interface CartService {
 
-    List<CartRespDto> getProductsOfCart(CartReqDto dto);
+    List<CartListRespDto> getProductsOfCart(CartReqDto dto);
 
     int register(CartInsertReqDto dto);
 
