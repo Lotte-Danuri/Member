@@ -12,4 +12,7 @@ public class CartListRespDto {
     private int quantity;
 
     private ProductDto productDto;
+
+    private String storeName;
+
 }

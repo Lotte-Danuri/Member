@@ -15,6 +15,8 @@ import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
+import com.lotte.danuri.member.store.Store;
+import com.lotte.danuri.member.store.StoreRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +32,7 @@ public class CartServiceImpl implements CartService{
     private final CartRepository cartRepository;
     private final MemberRepository memberRepository;
     private final ProductClient productClient;
+    private final StoreRepository storeRepository;
 
     @Override
     public List<CartListRespDto> getProductsOfCart(CartReqDto dto) {
@@ -40,16 +43,25 @@ public class CartServiceImpl implements CartService{
         List<Cart> resultList =
             cartRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new);
 
-        List<Long> productList = resultList.stream().map(Cart::getProductId).toList();
+        List<Long> productIdList = resultList.stream().map(Cart::getProductId).toList();
+        List<ProductDto> productList =
+            productClient.getProducts(ProductListDto.builder().productId(productIdList).build());
 
-        List<ProductDto> result =
-            productClient.getProducts(ProductListDto.builder().productId(productList).build());
+        List<Long> storeIdList = productList.stream().map(ProductDto::getStoreId).toList();
+
+        List<String> storeNameList = new ArrayList<>();
+        storeIdList.forEach(id -> {
+            String name = storeRepository.findById(id).get().getName();
+            storeNameList.add(name);
+        });
 
         List<CartListRespDto> cartList = new ArrayList<>();
-        for(Cart c : resultList) {
-            for(ProductDto d : result) {
-                cartList.add(CartListRespDto.builder().quantity(c.getQuantity()).productDto(d).build());
-            }
+        for(int i=0;i<resultList.size();i++) {
+            cartList.add(CartListRespDto.builder()
+                .quantity(resultList.get(i).getQuantity())
+                .productDto(productList.get(i))
+                .storeName(storeNameList.get(i))
+                .build());
         }
 
         return cartList;
