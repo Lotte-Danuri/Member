@@ -7,14 +7,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
 @Builder
 @Getter
 public class LikesInsertReqDto {
 
+    private Long id;
     private Long memberId;
-
     private Long productId;
+    private Boolean isInsert;
+
+    public LikesInsertReqDto(Long id, Long memberId, Long productId, Boolean isInsert) {
+        this.id = id;
+        this.memberId = memberId;
+        this.productId = productId;
+        this.isInsert = isInsert;
+    }
 
     public Likes toEntity(Member member) {
         return Likes.builder()

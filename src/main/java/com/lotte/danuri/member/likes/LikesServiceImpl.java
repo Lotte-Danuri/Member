@@ -3,6 +3,7 @@ package com.lotte.danuri.member.likes;
 import com.lotte.danuri.member.common.exception.codes.ErrorCode;
 import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
+import com.lotte.danuri.member.kafka.service.KafkaProducerService;
 import com.lotte.danuri.member.likes.dto.LikesDeleteReqDto;
 import com.lotte.danuri.member.likes.dto.LikesInsertReqDto;
 import com.lotte.danuri.member.likes.dto.LikesReqDto;
@@ -23,6 +24,7 @@ public class LikesServiceImpl implements LikesService{
 
     private final LikesRepository likesRepository;
     private final MemberRepository memberRepository;
+    private final KafkaProducerService kafkaProducerService;
 
     @Override
     public List<Long> getLikes(LikesReqDto dto) {
@@ -31,7 +33,7 @@ public class LikesServiceImpl implements LikesService{
     }
 
     @Override
-    public int register(LikesInsertReqDto dto) {
+    public int register(LikesReqDto dto) {
         Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
@@ -39,12 +41,16 @@ public class LikesServiceImpl implements LikesService{
         Likes likes = dto.toEntity(member);
         likesRepository.save(likes);
 
+        kafkaProducerService.send("like-insert-delete", dto);
+
         return 1;
     }
 
     @Override
-    public int delete(LikesDeleteReqDto dto) {
+    public int delete(LikesReqDto dto) {
         likesRepository.deleteById(dto.getId());
+
+        kafkaProducerService.send("like-insert-delete", dto);
 
         return 1;
     }
