@@ -8,7 +8,7 @@ public interface MyCouponService {
 
     int saveAllCoupons(MyCouponInsertReqDto dto);
 
-    List<MyCouponRespDto> getMyCoupons(Long memberId);
+    List<Long> getMyCoupons(Long memberId);
 
     List<MyCouponRespDto> getMyCouponsByStatus(Long memberId, int status);
 

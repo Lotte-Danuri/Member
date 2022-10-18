@@ -56,7 +56,7 @@ public class StoreController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/{storeId}")
+    @GetMapping("/name/{storeId}")
     @ApiOperation(value = "스토어 이름 조회", notes = "스토어 이름을 조회")
     public ResponseEntity<?> getNames(@PathVariable(name = "storeId") Long storeId) {
         return new ResponseEntity<>(storeService.getName(storeId), HttpStatus.OK);

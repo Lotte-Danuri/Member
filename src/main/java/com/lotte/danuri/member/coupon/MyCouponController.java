@@ -1,5 +1,8 @@
 package com.lotte.danuri.member.coupon;
 
+import com.lotte.danuri.member.client.ProductClient;
+import com.lotte.danuri.member.client.dto.CouponReqDto;
+import com.lotte.danuri.member.client.dto.CouponRespDto;
 import com.lotte.danuri.member.coupon.dto.MyCouponInsertReqDto;
 import com.lotte.danuri.member.coupon.dto.MyCouponReqDto;
 import com.lotte.danuri.member.coupon.dto.MyCouponRespDto;
@@ -17,10 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/mycoupon")
-@AllArgsConstructor
 public class MyCouponController {
 
     private final MyCouponService myCouponService;
+    private final ProductClient productClient;
+
+    public MyCouponController(MyCouponService myCouponService, ProductClient productClient) {
+        this.myCouponService = myCouponService;
+        this.productClient = productClient;
+    }
 
     @PostMapping()
     @ApiOperation(value = "쿠폰 추가", notes = "마이 쿠폰 목록에 쿠폰 추가")
@@ -34,8 +42,11 @@ public class MyCouponController {
     @GetMapping("/all")
     @ApiOperation(value = "쿠폰 조회", notes = "마이쿠폰함에 있는 모든 쿠폰 조회")
     public ResponseEntity<?> getAllCoupons(@RequestBody MyCouponReqDto dto) {
-        List<MyCouponRespDto> result = myCouponService.getMyCoupons(dto.getMemberId());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        List<Long> result = myCouponService.getMyCoupons(dto.getMemberId());
+
+        List<CouponRespDto> resultList =
+            productClient.getCoupons(CouponReqDto.builder().couponId(result).build());
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
     @GetMapping("/status")
