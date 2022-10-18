@@ -35,13 +35,13 @@ public class CartServiceImpl implements CartService{
     private final StoreRepository storeRepository;
 
     @Override
-    public List<CartListRespDto> getProductsOfCart(CartReqDto dto) {
+    public List<CartListRespDto> getProductsOfCart(Long memberId) {
 
-        memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
+        memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS));
 
         List<Cart> resultList =
-            cartRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new);
+            cartRepository.findByMemberId(memberId).orElseGet(ArrayList::new);
 
         List<Long> productIdList = resultList.stream().map(Cart::getProductId).toList();
         List<ProductDto> productList =

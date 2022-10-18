@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +26,8 @@ public class CartController {
 
     @GetMapping()
     @ApiOperation(value = "상품 조회", notes = "장바구니에 담겨있는 상품 조회")
-    public ResponseEntity<?> getProductsOfCart(@RequestBody CartReqDto dto) {
-        return new ResponseEntity<>(cartService.getProductsOfCart(dto), HttpStatus.OK);
+    public ResponseEntity<?> getProductsOfCart(@RequestHeader String memberId) {
+        return new ResponseEntity<>(cartService.getProductsOfCart(Long.parseLong(memberId)), HttpStatus.OK);
     }
 
     @PostMapping()
