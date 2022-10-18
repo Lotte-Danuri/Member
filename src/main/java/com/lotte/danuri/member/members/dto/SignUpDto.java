@@ -34,6 +34,9 @@ public class SignUpDto {
     @NotNull
     private String address;
 
+    @NotNull
+    private String birthDate;
+
     public Member toEntity() {
         return Member.builder()
             .address(address)
@@ -41,6 +44,7 @@ public class SignUpDto {
             .name(name)
             .phoneNumber(phoneNumber)
             .role(role)
+            .birthDate(birthDate)
             .build();
     }
 

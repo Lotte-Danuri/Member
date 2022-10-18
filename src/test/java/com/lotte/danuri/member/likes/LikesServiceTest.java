@@ -38,7 +38,7 @@ public class LikesServiceTest {
     void 상품_찜_등록_성공() {
 
         Long memberId = 4L;
-        LikesInsertReqDto dto = LikesInsertReqDto.builder()
+        LikesReqDto dto = LikesReqDto.builder()
             .memberId(memberId)
             .productId(1L)
             .build();
@@ -53,7 +53,7 @@ public class LikesServiceTest {
     void 상품_찜_등록_실패() {
 
         Long memberId = 100L;
-        LikesInsertReqDto dto = LikesInsertReqDto.builder()
+        LikesReqDto dto = LikesReqDto.builder()
             .memberId(memberId)
             .productId(2L)
             .build();
@@ -66,7 +66,7 @@ public class LikesServiceTest {
     @Test
     void 상품_찜_취소() {
 
-        LikesDeleteReqDto dto = LikesDeleteReqDto.builder()
+        LikesReqDto dto = LikesReqDto.builder()
             .id(6L).build();
 
         int result = likesService.delete(dto);

@@ -9,9 +9,9 @@ public interface LikesService {
 
     List<Long> getLikes(LikesReqDto dto);
 
-    int register(LikesInsertReqDto dto);
+    int register(LikesReqDto dto);
 
-    int delete(LikesDeleteReqDto dto);
+    int delete(LikesReqDto dto);
 
     int deleteAllByMember(Long memberId);
 
