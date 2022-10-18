@@ -36,7 +36,7 @@ public class MemberServiceTest {
     @Test
     void 멤버쉽_가입_등급설정() {
 
-        Long memberId = 6L;
+        String memberId = "6";
 
         Long result = memberService.updateMemberShip(memberId, 2);
 

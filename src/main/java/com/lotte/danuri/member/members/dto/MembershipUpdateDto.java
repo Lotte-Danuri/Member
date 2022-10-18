@@ -11,6 +11,4 @@ public class MembershipUpdateDto {
 
     private Long memberId;
 
-    private Long totalOrderPrice;
-
 }

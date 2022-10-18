@@ -1,9 +1,13 @@
 package com.lotte.danuri.member.members;
 
 import com.lotte.danuri.member.cart.CartService;
+import com.lotte.danuri.member.client.OrderClient;
+import com.lotte.danuri.member.client.ProductClient;
+import com.lotte.danuri.member.client.dto.OrderHeaderDto;
+import com.lotte.danuri.member.client.dto.ProductDto;
+import com.lotte.danuri.member.client.dto.ProductListDto;
 import com.lotte.danuri.member.coupon.MyCouponService;
 import com.lotte.danuri.member.follow.FollowService;
-import com.lotte.danuri.member.likes.Likes;
 import com.lotte.danuri.member.likes.LikesService;
 import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
@@ -12,7 +16,7 @@ import com.lotte.danuri.member.members.dto.MembershipUpdateDto;
 import com.lotte.danuri.member.members.dto.SignUpDto;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,9 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/")
 @CrossOrigin(origins = {"http://sbbro.xyz"}, allowCredentials = "true")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -35,6 +39,20 @@ public class MemberController {
     private final CartService cartService;
     private final MyCouponService myCouponService;
     private final FollowService followService;
+    private final ProductClient productClient;
+    private final OrderClient orderClient;
+
+    public MemberController(MemberService memberService, LikesService likesService,
+        CartService cartService, MyCouponService myCouponService, FollowService followService,
+        ProductClient productClient, OrderClient orderClient) {
+        this.memberService = memberService;
+        this.likesService = likesService;
+        this.cartService = cartService;
+        this.myCouponService = myCouponService;
+        this.followService = followService;
+        this.productClient = productClient;
+        this.orderClient = orderClient;
+    }
 
     @PostMapping("/members")
     @ApiOperation(value = "회원 정보 등록", notes = "회원 가입 후 정보 저장")
@@ -59,8 +77,11 @@ public class MemberController {
     public ResponseEntity<?> getPurchases() {
 
         // Order 마이크로 서비스 사용
+        String memberId = "5"; // 추후에 헤더값으로 테스트 진행 필요
+        List<OrderHeaderDto> resultList =
+            orderClient.getOrders(OrderHeaderDto.builder().buyerId(memberId).build());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
     @GetMapping("/products/detail")
@@ -87,10 +108,10 @@ public class MemberController {
 
         List<Long> productList = likesService.getLikes(dto);
 
-        // product 마이크로 서비스에서 상품 목록 조회
-        // in 조건절 써서 상품 아이디 리스트 보내면 상품 리스트 리턴받게
+        List<ProductDto> resultList =
+            productClient.getProducts(ProductListDto.builder().productId(productList).build());
 
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
     @PatchMapping("/deletes")
@@ -110,22 +131,26 @@ public class MemberController {
 
     @PatchMapping("/membership")
     @ApiOperation(value = "멤버쉽 가입/등급수정", notes = "멤버쉽을 가입 또는 등급 수정")
-    public ResponseEntity<?> updateMembership(@RequestBody MembershipUpdateDto dto) {
+    public ResponseEntity<?> updateMembership(@RequestHeader(name = "memberId") String id) {
 
-        Long price = dto.getTotalOrderPrice();
+        log.info("Header memberId = {}", id);
+        String memberId = "5"; // 추후에는 헤더에서 가져오게
+
+        Long price =
+            orderClient.getOrdersPrice(OrderHeaderDto.builder().buyerId(memberId).build());
         String rank;
 
         if(price == 0) {
-            memberService.updateMemberShip(dto.getMemberId(), 1);
+            memberService.updateMemberShip(memberId, 1);
             rank = "일반";
         }else if(price >= 100000000) {
-            memberService.updateMemberShip(dto.getMemberId(), 4);
+            memberService.updateMemberShip(memberId, 4);
             rank = "VVIP";
         }else if(price >= 50000000) {
-            memberService.updateMemberShip(dto.getMemberId(), 3);
+            memberService.updateMemberShip(memberId, 3);
             rank = "SVIP";
         }else {
-            memberService.updateMemberShip(dto.getMemberId(), 2);
+            memberService.updateMemberShip(memberId, 2);
             rank = "VIP";
         }
 

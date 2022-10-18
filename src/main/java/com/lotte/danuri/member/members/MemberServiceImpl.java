@@ -71,9 +71,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Long updateMemberShip(Long memberId, int rank) {
+    public Long updateMemberShip(String memberId, int rank) {
 
-        Member member = memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(Long.parseLong(memberId)).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 

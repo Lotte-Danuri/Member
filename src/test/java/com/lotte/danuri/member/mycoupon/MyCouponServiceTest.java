@@ -38,8 +38,7 @@ public class MyCouponServiceTest {
 
         Long memberId = 5L;
 
-        List<MyCouponRespDto> list = myCouponService.getMyCoupons(memberId);
-        list.forEach(c -> System.out.println(c.getId() + " " + c.getCouponId()));
+        List<Long> list = myCouponService.getMyCoupons(memberId);
 
         assertThat(list.size()).isGreaterThanOrEqualTo(0);
     }

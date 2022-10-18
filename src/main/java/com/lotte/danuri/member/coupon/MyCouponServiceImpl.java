@@ -50,10 +50,9 @@ public class MyCouponServiceImpl implements MyCouponService {
     }
 
     @Override
-    public List<MyCouponRespDto> getMyCoupons(Long memberId) {
+    public List<Long> getMyCoupons(Long memberId) {
         return myCouponRepository.findByMemberIdAndDeletedDateIsNull(memberId).orElseGet(ArrayList::new)
-            .stream().map(c -> MyCouponRespDto.builder()
-                .id(c.getId()).couponId(c.getCouponId()).status(c.getStatus()).build()).collect(Collectors.toList());
+            .stream().map(MyCoupon::getCouponId).collect(Collectors.toList());
     }
 
     @Override
