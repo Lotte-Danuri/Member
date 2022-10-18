@@ -1,7 +1,9 @@
 package com.lotte.danuri.member.store;
 
 import com.lotte.danuri.member.store.dto.StoreDto;
+import com.lotte.danuri.member.store.dto.StoreRespDto;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +31,13 @@ public class StoreController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping()
-    @ApiOperation(value = "스토어 조회", notes = "셀러의 스토어 조회")
-    public ResponseEntity<?> getStore(@RequestBody StoreDto dto) {
-        StoreDto respDto = storeService.getStore(dto.getSellerId());
+    @GetMapping("/{storeId}/list")
+    @ApiOperation(value = "스토어 목록 조회", notes = "브랜드의 스토어(지점) 조회")
+    public ResponseEntity<?> getStore(@PathVariable(name = "storeId") Long storeId) {
 
-        return new ResponseEntity<>(respDto, HttpStatus.OK);
+        List<StoreRespDto> storeList = storeService.getStores(storeId);
+
+        return new ResponseEntity<>(storeList, HttpStatus.OK);
     }
 
     @PatchMapping()

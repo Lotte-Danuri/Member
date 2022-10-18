@@ -1,13 +1,14 @@
 package com.lotte.danuri.member.store;
 
 import com.lotte.danuri.member.store.dto.StoreDto;
+import com.lotte.danuri.member.store.dto.StoreRespDto;
 import java.util.List;
 
 public interface StoreService {
 
     int register(StoreDto dto);
 
-    StoreDto getStore(Long sellerId);
+    List<StoreRespDto> getStores(Long storeId);
 
     int update(StoreDto dto);
 

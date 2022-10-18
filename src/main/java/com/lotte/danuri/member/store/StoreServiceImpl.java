@@ -10,6 +10,8 @@ import com.lotte.danuri.member.domain.BaseEntity;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
 import com.lotte.danuri.member.store.dto.StoreDto;
+import com.lotte.danuri.member.store.dto.StoreRespDto;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,10 +50,21 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDto getStore(Long storeId) {
-        Store findStore = storeRepository.findByMemberIdAndDeletedDateIsNull(storeId).orElseGet(Store::new);
+    public List<StoreRespDto> getStores(Long storeId) {
 
-        return findStore.toDto();
+        Store store = storeRepository.findByIdAndDeletedDateIsNull(storeId).orElseThrow(
+            () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(),
+                                        StoreErrorCode.NO_STORE_EXISTS)
+        );
+
+        List<Store> storeList =
+            storeRepository.findByBrandIdAndDeletedDateIsNull(store.getBrand().getId()).orElseGet(ArrayList::new);
+
+        return storeList.stream().map(s -> StoreRespDto.builder()
+                                            .storeId(s.getId())
+                                            .storeName(s.getName())
+                                            .build()).collect(Collectors.toList());
+
     }
 
     @Override
