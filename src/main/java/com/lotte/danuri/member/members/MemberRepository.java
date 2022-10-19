@@ -13,7 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<List<Member>> findByRoleAndStatus(int role, int status);
 
     @Query(
-        value = "SELECT distinct m FROM member m JOIN FETCH m.followList f "
+        value = "SELECT distinct m FROM Member m JOIN FETCH m.followList f "
             + "WHERE m.id = :memberId "
             + "AND f.member.id = :memberId "
             + "AND m.deletedDate is null "

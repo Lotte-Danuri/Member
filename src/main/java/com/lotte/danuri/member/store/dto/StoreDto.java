@@ -32,7 +32,6 @@ public class StoreDto {
 
     public Store toEntity(Member member) {
         return Store.builder()
-            .member(member)
             .name(name)
             .description(description)
             .address(address)

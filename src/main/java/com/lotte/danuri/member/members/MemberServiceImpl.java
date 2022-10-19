@@ -60,10 +60,6 @@ public class MemberServiceImpl implements MemberService {
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 
-        int role = member.getRole();
-        if(role == 2 && storeRepository.findByMemberIdAndDeletedDateIsNull(member.getId()).isPresent()) {
-            throw new SellerStoreExistedException(MemberErrorCode.SELLER_STORE_EXISTS.getMessage(), MemberErrorCode.SELLER_STORE_EXISTS);
-        }
 
         member.delete();
 
