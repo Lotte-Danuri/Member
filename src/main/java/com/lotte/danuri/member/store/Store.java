@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,11 +25,8 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
+@Table(name = "store")
 public class Store extends BaseEntity {
-
-    @OneToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
 
     private String name;
 
@@ -46,13 +44,12 @@ public class Store extends BaseEntity {
     private List<Follow> followList;
 
     @ManyToOne
-    @JoinColumn(name = "BRAND_ID")
+    @JoinColumn(name = "Brand_id")
     private Brand brand;
 
     public StoreDto toDto() {
         return StoreDto.builder()
             .id(getId())
-            .sellerId(member.getId())
             .name(name)
             .address(address)
             .description(description)
