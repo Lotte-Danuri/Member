@@ -28,28 +28,6 @@ public class StoreServiceImpl implements StoreService {
     private final MemberRepository memberRepository;
 
     @Override
-    public int register(StoreDto dto) {
-
-        if(storeRepository.findByNameAndDeletedDateIsNull(dto.getName()).isPresent()) {
-            throw new DuplicatedStoreNameException(StoreErrorCode.DUPLICATED_STORE_NAME.getMessage(), StoreErrorCode.DUPLICATED_STORE_NAME);
-        }else {
-            Member findMember = memberRepository.findByIdAndDeletedDateIsNull(dto.getSellerId()).orElseThrow(
-                () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
-            );
-
-            if(findMember.getStatus() == 0) {
-                throw new NoAuthorizationException(MemberErrorCode.NO_AUTHORIZED_SELLER.getMessage(), MemberErrorCode.NO_AUTHORIZED_SELLER);
-            }else {
-                Store store = dto.toEntity(findMember);
-                storeRepository.save(store);
-                return 1;
-            }
-
-        }
-
-    }
-
-    @Override
     public List<StoreRespDto> getStores(Long storeId) {
 
         Store store = storeRepository.findByIdAndDeletedDateIsNull(storeId).orElseThrow(

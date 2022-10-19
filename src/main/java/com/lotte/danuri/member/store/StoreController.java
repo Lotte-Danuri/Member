@@ -23,14 +23,6 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    @PostMapping()
-    @ApiOperation(value = "스토어 등록", notes = "셀러의 스토어 등록")
-    public ResponseEntity<?> register(@RequestBody StoreDto dto) {
-        int result = storeService.register(dto);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @GetMapping("/{storeId}/list")
     @ApiOperation(value = "스토어 목록 조회", notes = "브랜드의 스토어(지점) 조회")
     public ResponseEntity<?> getStore(@PathVariable(name = "storeId") Long storeId) {

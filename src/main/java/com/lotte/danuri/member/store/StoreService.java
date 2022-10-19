@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface StoreService {
 
-    int register(StoreDto dto);
-
     List<StoreRespDto> getStores(Long storeId);
 
     int update(StoreDto dto);
