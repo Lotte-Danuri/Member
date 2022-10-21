@@ -27,8 +27,8 @@ public class LikesServiceImpl implements LikesService{
     private final KafkaProducerService kafkaProducerService;
 
     @Override
-    public List<Long> getLikes(LikesReqDto dto) {
-        return likesRepository.findByMemberId(dto.getMemberId()).orElseGet(ArrayList::new)
+    public List<Long> getLikes(String memberId) {
+        return likesRepository.findByMemberId(Long.parseLong(memberId)).orElseGet(ArrayList::new)
             .stream().map(Likes::getProductId).collect(Collectors.toList());
     }
 
