@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface LikesService {
 
-    List<Long> getLikes(LikesReqDto dto);
+    List<Long> getLikes(String memberId);
 
     int register(LikesReqDto dto);
 

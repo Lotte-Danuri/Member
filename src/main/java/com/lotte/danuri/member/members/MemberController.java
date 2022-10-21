@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin(origins = {"http://sbbro.xyz"}, allowCredentials = "true")
 @Slf4j
+@CrossOrigin("*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -74,10 +74,9 @@ public class MemberController {
 
     @GetMapping("/products")
     @ApiOperation(value = "구매 목록 조회", notes = "회원의 구매 목록 조회")
-    public ResponseEntity<?> getPurchases() {
+    public ResponseEntity<?> getPurchases(@RequestHeader String memberId) {
 
         // Order 마이크로 서비스 사용
-        String memberId = "5"; // 추후에 헤더값으로 테스트 진행 필요
         List<OrderHeaderDto> resultList =
             orderClient.getOrders(OrderHeaderDto.builder().buyerId(memberId).build());
 
@@ -104,9 +103,9 @@ public class MemberController {
 
     @PostMapping("/like")
     @ApiOperation(value = "좋아요 상품 조회", notes = "회원의 좋아요한 상품 조회")
-    public ResponseEntity<?> getLikes(@RequestBody LikesReqDto dto) {
+    public ResponseEntity<?> getLikes(@RequestHeader String memberId) {
 
-        List<Long> productList = likesService.getLikes(dto);
+        List<Long> productList = likesService.getLikes(memberId);
 
         List<ProductDto> resultList =
             productClient.getProducts(ProductListDto.builder().productId(productList).build());
