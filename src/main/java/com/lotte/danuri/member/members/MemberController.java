@@ -13,6 +13,7 @@ import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.MemberReqDto;
 import com.lotte.danuri.member.members.dto.MembershipUpdateDto;
+import com.lotte.danuri.member.members.dto.SignUpByOAuthDto;
 import com.lotte.danuri.member.members.dto.SignUpDto;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -58,6 +59,12 @@ public class MemberController {
     @ApiOperation(value = "회원 정보 등록", notes = "회원 가입 후 정보 저장")
     public ResponseEntity<?> save(@RequestBody SignUpDto dto) {
         return new ResponseEntity<>(memberService.register(dto), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/members/oAuth")
+    @ApiOperation(value = "OAuth 회원 정보 등록", notes = "OAuth로 회원가입")
+    public ResponseEntity<?> saveByOAuth(@RequestBody SignUpByOAuthDto dto) {
+        return new ResponseEntity<>(memberService.registerByOAuth(dto), HttpStatus.CREATED);
     }
 
     @GetMapping("/members")

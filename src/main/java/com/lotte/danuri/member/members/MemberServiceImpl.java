@@ -5,6 +5,7 @@ import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.SellerStoreExistedException;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.MemberRespDto;
+import com.lotte.danuri.member.members.dto.SignUpByOAuthDto;
 import com.lotte.danuri.member.members.dto.SignUpDto;
 import com.lotte.danuri.member.store.StoreRepository;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long register(SignUpDto dto) {
+        Member member = memberRepository.save(dto.toEntity());
+        return member.getId();
+    }
+
+    @Override
+    public Long registerByOAuth(SignUpByOAuthDto dto) {
         Member member = memberRepository.save(dto.toEntity());
         return member.getId();
     }
