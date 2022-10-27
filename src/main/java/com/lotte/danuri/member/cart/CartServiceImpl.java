@@ -21,18 +21,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 @AllArgsConstructor
+@Slf4j
 public class CartServiceImpl implements CartService{
 
     private final CartRepository cartRepository;
     private final MemberRepository memberRepository;
     private final ProductClient productClient;
     private final StoreRepository storeRepository;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     @Override
     public List<CartListRespDto> getProductsOfCart(Long memberId) {
@@ -40,12 +45,15 @@ public class CartServiceImpl implements CartService{
         memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS));
 
-        List<Cart> resultList =
-            cartRepository.findByMemberId(memberId).orElseGet(ArrayList::new);
+        List<Cart> resultList = cartRepository.findByMemberId(memberId).orElseGet(ArrayList::new);
 
+        log.info("Before Call [getProducts] Method IN [Product-Service]");
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
         List<Long> productIdList = resultList.stream().map(Cart::getProductId).toList();
-        List<ProductDto> productList =
-            productClient.getProducts(ProductListDto.builder().productId(productIdList).build());
+        List<ProductDto> productList = circuitBreaker.run(() ->
+            productClient.getProducts(ProductListDto.builder().productId(productIdList).build()),
+            throwable -> new ArrayList<>());
+        log.info("After Call [getProducts] Method IN [Product-Service]");
 
         List<Long> storeIdList = productList.stream().map(ProductDto::getStoreId).toList();
 
