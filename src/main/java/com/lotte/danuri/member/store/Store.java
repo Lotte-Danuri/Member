@@ -36,8 +36,6 @@ public class Store extends BaseEntity {
 
     private String ownerNumber;
 
-    private String image;
-
     private LocalDateTime deletedDate;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -54,7 +52,6 @@ public class Store extends BaseEntity {
             .address(address)
             .description(description)
             .ownerNumber(ownerNumber)
-            .image(image)
             .build();
     }
 

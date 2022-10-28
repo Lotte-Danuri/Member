@@ -28,15 +28,12 @@ public class StoreDto {
 
     private String ownerNumber;
 
-    private String image;
-
     public Store toEntity(Member member) {
         return Store.builder()
             .name(name)
             .description(description)
             .address(address)
             .ownerNumber(ownerNumber)
-            .image(image)
             .build();
     }
 

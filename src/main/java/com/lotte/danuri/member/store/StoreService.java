@@ -10,8 +10,6 @@ public interface StoreService {
 
     int update(StoreDto dto);
 
-    int updateImage(StoreDto dto);
-
     int delete(Long storeId);
 
     String getName(Long storeId);

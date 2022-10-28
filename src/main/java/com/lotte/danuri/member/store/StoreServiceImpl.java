@@ -65,19 +65,6 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public int updateImage(StoreDto dto) {
-
-        Member findMember = memberRepository.findByIdAndDeletedDateIsNull(dto.getSellerId()).orElseThrow();
-
-        if(storeRepository.findById(dto.getId()).isEmpty()) {
-            throw new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS);
-        }else {
-            storeRepository.save(Store.builder().image(dto.getImage()).build());
-            return 1;
-        }
-    }
-
-    @Override
     public int delete(Long storeId) {
 
         if(storeRepository.findById(storeId).isEmpty()) {

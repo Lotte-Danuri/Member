@@ -65,7 +65,6 @@ public class FollowServiceImpl implements FollowService {
         return storeList.stream().map(s ->
             StoreDto.builder()
                 .id(s.getId())
-                .image(s.getImage())
                 .name(s.getName())
                 .build()).collect(Collectors.toList());
     }
