@@ -28,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long registerByOAuth(SignUpByOAuthDto dto) {
+        dto.update();
         Member member = memberRepository.save(dto.toEntity());
         return member.getId();
     }

@@ -1,8 +1,6 @@
 package com.lotte.danuri.member.members.dto;
 
 import com.lotte.danuri.member.members.Member;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +13,7 @@ public class SignUpByOAuthDto {
     private int role;
     private String gender;
     private String birthday;
+    private String phone;
 
     public Member toEntity() {
         return Member.builder()
@@ -22,7 +21,20 @@ public class SignUpByOAuthDto {
             .role(role)
             .gender(gender)
             .birthDate(birthday)
+            .phoneNumber(phone)
             .build();
+    }
+
+    public void update() {
+        if(birthday.contains("-")) {
+            birthday = birthday.replace("-", "");
+        }
+
+        if(gender.startsWith("f") || gender.startsWith("F")) {
+            gender = "여자";
+        }else if(gender.startsWith("m") || gender.startsWith("M")) {
+            gender = "남자";
+        }
     }
 
 }
