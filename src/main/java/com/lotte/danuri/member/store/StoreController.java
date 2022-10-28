@@ -5,6 +5,7 @@ import com.lotte.danuri.member.store.dto.StoreRespDto;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/store")
+@Slf4j
 public class StoreController {
 
     private final StoreService storeService;
@@ -54,13 +56,23 @@ public class StoreController {
     @GetMapping("/name/{storeId}")
     @ApiOperation(value = "스토어 이름 조회", notes = "스토어 이름을 조회")
     public ResponseEntity<?> getNames(@PathVariable(name = "storeId") Long storeId) {
-        return new ResponseEntity<>(storeService.getName(storeId), HttpStatus.OK);
+
+        log.info("Before Retrieve [getNames] Method IN [Member-Service]");
+        String name = storeService.getName(storeId);
+        log.info("After Retrieve [getNames] Method IN [Member-Service]");
+
+        return new ResponseEntity<>(name, HttpStatus.OK);
     }
 
     @GetMapping("/{brandId}")
     @ApiOperation(value = "스토어 id 조회", notes = "브랜드로 스토어 아이디 조회")
     public ResponseEntity<?> getStoreId(@PathVariable(name = "brandId") Long brandId) {
-        return new ResponseEntity<>(storeService.getStoreId(brandId), HttpStatus.OK);
+
+        log.info("Before Retrieve [getStoreId] Method IN [Member-Service]");
+        List<Long> storeIds = storeService.getStoreId(brandId);
+        log.info("After Retrieve [getStoreId] Method IN [Member-Service]");
+
+        return new ResponseEntity<>(storeIds, HttpStatus.OK);
     }
 
 }

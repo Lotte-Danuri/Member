@@ -40,15 +40,21 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	//implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 
-
 	// Feign Client
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 	// kafka
 	implementation 'org.springframework.kafka:spring-kafka'
 
+	// Zipkin
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '3.1.4'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: '2.2.8.RELEASE'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.apache.httpcomponents:httpclient'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
