@@ -40,7 +40,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	//implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 
-
 	// Feign Client
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
@@ -54,6 +53,8 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.apache.httpcomponents:httpclient'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

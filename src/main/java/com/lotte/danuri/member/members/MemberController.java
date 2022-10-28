@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 @Slf4j
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MemberController {
 
     private final MemberService memberService;
