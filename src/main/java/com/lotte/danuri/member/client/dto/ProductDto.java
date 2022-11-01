@@ -30,4 +30,10 @@ public class ProductDto {
     private String createdBy;
     private String updatedBy;
 
+    private String brandName;
+
+    public void update(String name) {
+        this.brandName = name;
+    }
+
 }

@@ -1,14 +1,17 @@
 package com.lotte.danuri.member.store;
 
+import com.lotte.danuri.member.common.exception.codes.CommonErrorCode;
 import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
 import com.lotte.danuri.member.common.exception.codes.StoreErrorCode;
 import com.lotte.danuri.member.common.exception.exceptions.DuplicatedStoreNameException;
 import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationException;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
+import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;
 import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
 import com.lotte.danuri.member.domain.BaseEntity;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
+import com.lotte.danuri.member.store.dto.BrandDto;
 import com.lotte.danuri.member.store.dto.StoreDto;
 import com.lotte.danuri.member.store.dto.StoreRespDto;
 import java.util.ArrayList;
@@ -26,6 +29,24 @@ public class StoreServiceImpl implements StoreService {
 
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
+    private final BrandRepository brandRepository;
+
+    @Override
+    public BrandDto getBrand(Long storeId) {
+        Store store = storeRepository.findById(storeId).orElseThrow(
+            () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS)
+        );
+
+        Brand brand = brandRepository.findById(store.getBrand().getId()).orElseThrow(
+            () -> new NoResourceException(CommonErrorCode.RESOURCE_NOT_FOUND.getMessage(), CommonErrorCode.RESOURCE_NOT_FOUND)
+        );
+
+        return BrandDto.builder()
+            .id(brand.getId())
+            .name(brand.getName())
+            .imageUrl(brand.getImage())
+            .build();
+    }
 
     @Override
     public List<StoreRespDto> getStores(Long storeId) {
