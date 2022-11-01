@@ -96,7 +96,7 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/seller")
+    @PostMapping("/seller")
     @ApiOperation(value = "셀러 지점 정보 조회", notes = "셀러의 브랜드 지점을 조회")
     public ResponseEntity<?> getSeller(@RequestBody Long memberId) {
         return new ResponseEntity<>(memberService.getSeller(memberId), HttpStatus.OK);
