@@ -1,7 +1,9 @@
 package com.lotte.danuri.member.members;
 
 import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
+import com.lotte.danuri.member.common.exception.codes.StoreErrorCode;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
+import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
 import com.lotte.danuri.member.common.exception.exceptions.SellerStoreExistedException;
 import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.MemberRespDto;
@@ -31,6 +33,30 @@ public class MemberServiceImpl implements MemberService {
         dto.update();
         Member member = memberRepository.save(dto.toEntity());
         return member.getId();
+    }
+
+    @Override
+    public Long updateSeller(Long memberId, Long storeId) {
+        Member seller = memberRepository.findByIdAndRole(memberId, 1).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_SELLER_EXISTS.getMessage(), MemberErrorCode.NO_SELLER_EXISTS)
+        );
+
+        storeRepository.findById(storeId).orElseThrow(
+            () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS)
+        );
+        seller.updateSeller(storeId);
+
+        return memberId;
+
+    }
+
+    @Override
+    public Long getSeller(Long memberId) {
+        Member seller = memberRepository.findByIdAndRole(memberId, 1).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_SELLER_EXISTS.getMessage(), MemberErrorCode.NO_SELLER_EXISTS)
+        );
+
+        return seller.getStoreId();
     }
 
     @Override

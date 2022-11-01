@@ -40,12 +40,18 @@ public class Member extends BaseEntity {
 
     private LocalDateTime expiredDate;
 
+    private Long storeId;
+
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follow> followList;
 
     public void updateStatus(int status) {
         this.status = status;
+    }
+
+    public void updateSeller(Long storeId) {
+        this.storeId = storeId;
     }
 
     public void updateInfo(String name, String address, String phoneNumber) {

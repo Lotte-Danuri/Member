@@ -22,4 +22,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByIdAndFollow(Long memberId);
 
     Optional<Member> findByIdAndDeletedDateIsNull(Long memberId);
+
+    Optional<Member> findByIdAndRole(Long memberId, int status);
 }

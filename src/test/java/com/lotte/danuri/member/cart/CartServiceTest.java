@@ -7,6 +7,7 @@ import com.lotte.danuri.member.cart.dto.CartDeleteReqDto;
 import com.lotte.danuri.member.cart.dto.CartReqDto;
 import com.lotte.danuri.member.cart.dto.CartRespDto;
 import com.lotte.danuri.member.cart.dto.CartUpdateReqDto;
+import com.lotte.danuri.member.client.dto.CartListRespDto;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;
 import java.util.List;
@@ -23,25 +24,16 @@ public class CartServiceTest {
     CartService cartService;
 
     @Test
-    void 장바구니_상품_조회_성공() {
+    void 장바구니_상품_조회() {
+        Long memberId = 1L;
 
-        CartReqDto dto = CartReqDto.builder().memberId(4L).build();
+        List<CartListRespDto> result = cartService.getProductsOfCart(memberId);
 
-        List<CartRespDto> resultList = cartService.getProductsOfCart(dto);
+        result.forEach(c -> {
+            System.out.println(c.getBrandName() + " " + c.getStoreName());
+        });
 
-        System.out.println(resultList.size());
-        assertThat(resultList.size()).isGreaterThanOrEqualTo(0);
-
-    }
-
-    @Test
-    void 장바구니_상품_조회_실패() {
-
-        CartReqDto dto = CartReqDto.builder().memberId(100L).build();
-
-        assertThatThrownBy(() -> cartService.getProductsOfCart(dto))
-            .isInstanceOf(NoMemberException.class)
-            .hasMessageContaining("Member is not Existed");
+        assertThat(result.size()).isGreaterThanOrEqualTo(0);
     }
 
     @Test

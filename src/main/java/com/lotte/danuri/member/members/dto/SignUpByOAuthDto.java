@@ -10,7 +10,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SignUpByOAuthDto {
     private String name;
-    private int role;
     private String gender;
     private String birthday;
     private String phone;
@@ -18,7 +17,7 @@ public class SignUpByOAuthDto {
     public Member toEntity() {
         return Member.builder()
             .name(name)
-            .role(role)
+            .role(0)
             .gender(gender)
             .birthDate(birthday)
             .phoneNumber(phone)
