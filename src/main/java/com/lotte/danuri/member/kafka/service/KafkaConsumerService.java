@@ -7,4 +7,6 @@ public interface KafkaConsumerService {
     Map<Object, Object> kafkaInit(String kafkaMessage);
     void insertMyCoupon(String kafkaMessage);
 
+    void deleteCart(String kafkaMessage);
+
 }
