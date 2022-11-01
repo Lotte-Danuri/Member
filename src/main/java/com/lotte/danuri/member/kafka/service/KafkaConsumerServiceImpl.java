@@ -3,6 +3,7 @@ package com.lotte.danuri.member.kafka.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lotte.danuri.member.cart.CartRepository;
 import com.lotte.danuri.member.common.exception.codes.ErrorCode;
 import com.lotte.danuri.member.common.exception.codes.StoreErrorCode;
 import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;
@@ -29,6 +30,7 @@ public class KafkaConsumerServiceImpl implements  KafkaConsumerService{
     private final MyCouponRepository myCouponRepository;
     private final FollowRepository followRepository;
     private final StoreRepository storeRepository;
+    private final CartRepository cartRepository;
 
     @Override
     public Map<Object, Object> kafkaInit(String kafkaMessage){
@@ -65,6 +67,18 @@ public class KafkaConsumerServiceImpl implements  KafkaConsumerService{
             myCouponRepository.save(coupon);
             log.info("[Kafka] MyCouponInsert save MyCoupons : {}", coupon.getCouponId());
         });
+
+    }
+
+    @Override
+    @KafkaListener(topics = "order-insert-cart-delete")
+    public void deleteCart(String kafkaMessage) {
+
+        Map<Object, Object> msgInfo = kafkaInit(kafkaMessage);
+
+        Long memberId = Long.valueOf(String.valueOf(msgInfo.get("buyerId")));
+
+        cartRepository.deleteAllByMemberId(memberId);
 
     }
 }
