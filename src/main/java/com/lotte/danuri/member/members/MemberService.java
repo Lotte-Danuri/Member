@@ -14,6 +14,10 @@ public interface MemberService {
 
     Long registerByOAuth(SignUpByOAuthDto dto);
 
+    Long updateSeller(Long memberId, Long storeId);
+
+    Long getSeller(Long memberId);
+
     Long updateMemberInfo(MemberInfoReqDto dto);
 
     MemberRespDto getMember(Long memberId);

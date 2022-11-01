@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -86,6 +87,21 @@ public class MemberController {
     public ResponseEntity<?> getName(@RequestHeader String memberId) {
         return new ResponseEntity<>(memberService.getMember(Long.parseLong(memberId)), HttpStatus.OK);
     }
+
+    @PatchMapping("/seller")
+    @ApiOperation(value = "셀러 지점 정보 등록", notes = "셀러의 브랜드 지점을 등록")
+    public ResponseEntity<?> updateSeller(@RequestHeader String memberId,
+                                            @RequestBody Long storeId) {
+        memberService.updateSeller(Long.parseLong(memberId), storeId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/seller")
+    @ApiOperation(value = "셀러 지점 정보 조회", notes = "셀러의 브랜드 지점을 조회")
+    public ResponseEntity<?> getSeller(@RequestBody Long memberId) {
+        return new ResponseEntity<>(memberService.getSeller(memberId), HttpStatus.OK);
+    }
+
 
     @PatchMapping("/info")
     @ApiOperation(value = "회원 수정", notes = "회원의 개인정보 수정")
