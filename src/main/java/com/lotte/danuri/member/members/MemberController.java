@@ -13,6 +13,8 @@ import com.lotte.danuri.member.members.dto.MemberInfoReqDto;
 import com.lotte.danuri.member.members.dto.MemberReqDto;
 import com.lotte.danuri.member.members.dto.SignUpByOAuthDto;
 import com.lotte.danuri.member.members.dto.SignUpDto;
+import com.lotte.danuri.member.store.StoreService;
+import com.lotte.danuri.member.store.dto.BrandDto;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -45,11 +46,12 @@ public class MemberController {
     private final ProductClient productClient;
     private final OrderClient orderClient;
     private final CircuitBreakerFactory circuitBreakerFactory;
+    private final StoreService storeService;
 
     public MemberController(MemberService memberService, LikesService likesService,
         CartService cartService, MyCouponService myCouponService, FollowService followService,
         ProductClient productClient, OrderClient orderClient,
-        CircuitBreakerFactory circuitBreakerFactory) {
+        CircuitBreakerFactory circuitBreakerFactory, StoreService storeService) {
         this.memberService = memberService;
         this.likesService = likesService;
         this.cartService = cartService;
@@ -58,6 +60,7 @@ public class MemberController {
         this.productClient = productClient;
         this.orderClient = orderClient;
         this.circuitBreakerFactory = circuitBreakerFactory;
+        this.storeService = storeService;
     }
 
     @PostMapping("/members")
@@ -154,6 +157,11 @@ public class MemberController {
             productClient.getProducts(ProductListDto.builder().productId(productList).build()),
             throwable -> new ArrayList<>());
         log.info("After Call [getProducts] Method IN [Product-Service]");
+
+        resultList.forEach(p -> {
+            BrandDto brandDto = storeService.getBrand(p.getStoreId());
+            p.update(brandDto.getName());
+        });
 
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
