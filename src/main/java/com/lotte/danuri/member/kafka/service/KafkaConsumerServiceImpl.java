@@ -76,9 +76,11 @@ public class KafkaConsumerServiceImpl implements  KafkaConsumerService{
 
         Map<Object, Object> msgInfo = kafkaInit(kafkaMessage);
 
+        log.info("kafkaMessage msgInfo = {}", msgInfo);
         Long memberId = Long.valueOf(String.valueOf(msgInfo.get("buyerId")));
 
         cartRepository.deleteAllByMemberId(memberId);
+        log.info("[Kafka] CartDelete delete cart");
 
     }
 }
