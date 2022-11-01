@@ -11,12 +11,14 @@ import com.lotte.danuri.member.members.dto.SignUpByOAuthDto;
 import com.lotte.danuri.member.members.dto.SignUpDto;
 import com.lotte.danuri.member.store.StoreRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
 @Transactional
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -55,6 +57,8 @@ public class MemberServiceImpl implements MemberService {
         Member seller = memberRepository.findByIdAndRole(memberId, 1).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_SELLER_EXISTS.getMessage(), MemberErrorCode.NO_SELLER_EXISTS)
         );
+
+        log.info("seller id = {}", seller.getStoreId());
 
         return seller.getStoreId();
     }
