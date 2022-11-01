@@ -15,6 +15,8 @@ import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
+import com.lotte.danuri.member.store.Brand;
+import com.lotte.danuri.member.store.BrandRepository;
 import com.lotte.danuri.member.store.Store;
 import com.lotte.danuri.member.store.StoreRepository;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class CartServiceImpl implements CartService{
     private final ProductClient productClient;
     private final StoreRepository storeRepository;
     private final CircuitBreakerFactory circuitBreakerFactory;
+    private final BrandRepository brandRepository;
 
     @Override
     public List<CartListRespDto> getProductsOfCart(Long memberId) {
@@ -58,9 +61,12 @@ public class CartServiceImpl implements CartService{
         List<Long> storeIdList = productList.stream().map(ProductDto::getStoreId).toList();
 
         List<String> storeNameList = new ArrayList<>();
+        List<String> brandNameList = new ArrayList<>();
         storeIdList.forEach(id -> {
-            String name = storeRepository.findById(id).get().getName();
-            storeNameList.add(name);
+            Store store = storeRepository.findById(id).orElseThrow();
+            Brand brand = brandRepository.findById(store.getBrand().getId()).orElseThrow();
+            storeNameList.add(store.getName());
+            brandNameList.add(brand.getName());
         });
 
         List<CartListRespDto> cartList = new ArrayList<>();
@@ -69,6 +75,7 @@ public class CartServiceImpl implements CartService{
                 .quantity(resultList.get(i).getQuantity())
                 .productDto(productList.get(i))
                 .storeName(storeNameList.get(i))
+                .brandName(brandNameList.get(i))
                 .build());
         }
 

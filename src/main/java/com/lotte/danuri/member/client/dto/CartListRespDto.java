@@ -15,4 +15,6 @@ public class CartListRespDto {
 
     private String storeName;
 
+    private String brandName;
+
 }
