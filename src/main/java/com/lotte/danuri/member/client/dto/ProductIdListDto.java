@@ -8,8 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ProductListDto {
+public class ProductIdListDto {
 
-    private List<String> productCode;
-
+    private List<Long> productIdList;
 }

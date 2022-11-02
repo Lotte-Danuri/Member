@@ -8,6 +8,7 @@ import com.lotte.danuri.member.cart.dto.CartUpdateReqDto;
 import com.lotte.danuri.member.client.ProductClient;
 import com.lotte.danuri.member.client.dto.CartListRespDto;
 import com.lotte.danuri.member.client.dto.ProductDto;
+import com.lotte.danuri.member.client.dto.ProductIdListDto;
 import com.lotte.danuri.member.client.dto.ProductListDto;
 import com.lotte.danuri.member.common.exception.codes.CommonErrorCode;
 import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
@@ -54,7 +55,7 @@ public class CartServiceImpl implements CartService{
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
         List<Long> productIdList = resultList.stream().map(Cart::getProductId).toList();
         List<ProductDto> productList = circuitBreaker.run(() ->
-            productClient.getProducts(ProductListDto.builder().productId(productIdList).build()),
+            productClient.getProductsById(ProductIdListDto.builder().productIdList(productIdList).build()),
             throwable -> new ArrayList<>());
         log.info("After Call [getProducts] Method IN [Product-Service]");
 

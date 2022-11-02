@@ -23,6 +23,6 @@ public class Likes extends BaseEntity {
     @JoinColumn(name = "Member_id")
     private Member member;
 
-    private Long productId;
+    private String productCode;
 
 }
