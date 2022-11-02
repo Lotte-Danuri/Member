@@ -32,8 +32,9 @@ public class CartController {
 
     @PostMapping()
     @ApiOperation(value = "상품 등록", notes = "장바구니에 상품 추가")
-    public ResponseEntity<?> register(@RequestBody CartInsertReqDto dto) {
-        return new ResponseEntity<>(cartService.register(dto), HttpStatus.OK);
+    public ResponseEntity<?> register(@RequestHeader String memberId,
+                                        @RequestBody CartInsertReqDto dto) {
+        return new ResponseEntity<>(cartService.register(Long.parseLong(memberId), dto), HttpStatus.OK);
     }
 
     @PatchMapping()
