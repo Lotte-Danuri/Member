@@ -1,17 +1,15 @@
 package com.lotte.danuri.member.likes;
 
-import com.lotte.danuri.member.likes.dto.LikesDeleteReqDto;
-import com.lotte.danuri.member.likes.dto.LikesInsertReqDto;
-import com.lotte.danuri.member.likes.dto.LikesReqDto;
 import java.util.List;
 
 public interface LikesService {
 
-    List<Long> getLikes(String memberId);
+    boolean checkLike(Long memberId, String productCode);
+    List<String> getLikes(String memberId);
 
-    int register(LikesReqDto dto);
+    int register(Long memberId, String productCode);
 
-    int delete(LikesReqDto dto);
+    int delete(Long memberId, String productCode);
 
     int deleteAllByMember(Long memberId);
 
