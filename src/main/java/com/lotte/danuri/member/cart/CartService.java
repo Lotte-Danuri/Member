@@ -12,7 +12,7 @@ public interface CartService {
 
     List<CartListRespDto> getProductsOfCart(Long memberId);
 
-    int register(CartInsertReqDto dto);
+    int register(Long memberId, CartInsertReqDto dto);
 
     int update(CartUpdateReqDto dto);
 

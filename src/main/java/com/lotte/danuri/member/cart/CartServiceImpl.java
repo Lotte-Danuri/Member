@@ -84,8 +84,8 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public int register(CartInsertReqDto dto) {
-        Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
+    public int register(Long memberId, CartInsertReqDto dto) {
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
         cartRepository.save(dto.toEntity(member));
