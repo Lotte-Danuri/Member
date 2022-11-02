@@ -25,6 +25,11 @@ public class SignUpByOAuthDto {
     }
 
     public void update() {
+
+        if(birthday == null || gender == null) {
+            return;
+        }
+
         if(birthday.contains("-")) {
             birthday = birthday.replace("-", "");
         }
