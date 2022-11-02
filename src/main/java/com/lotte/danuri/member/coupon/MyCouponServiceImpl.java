@@ -2,7 +2,9 @@ package com.lotte.danuri.member.coupon;
 
 import com.lotte.danuri.member.common.exception.codes.CommonErrorCode;
 import com.lotte.danuri.member.common.exception.codes.CouponErrorCode;
+import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
 import com.lotte.danuri.member.common.exception.codes.StoreErrorCode;
+import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoMyCouponException;
 import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;
 import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
@@ -10,6 +12,7 @@ import com.lotte.danuri.member.coupon.dto.MyCouponInsertReqDto;
 import com.lotte.danuri.member.coupon.dto.MyCouponRespDto;
 import com.lotte.danuri.member.follow.Follow;
 import com.lotte.danuri.member.members.Member;
+import com.lotte.danuri.member.members.MemberRepository;
 import com.lotte.danuri.member.store.Store;
 import com.lotte.danuri.member.store.StoreRepository;
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ public class MyCouponServiceImpl implements MyCouponService {
 
     private final MyCouponRepository myCouponRepository;
     private final StoreRepository storeRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public int saveAllCoupons(MyCouponInsertReqDto dto) {
@@ -40,13 +44,28 @@ public class MyCouponServiceImpl implements MyCouponService {
 
         for(Member m : followers) {
             for(Long c : dto.getCouponList()) {
-                result.add(MyCoupon.builder().couponId(c).member(m).status(0).build());
+                result.add(MyCoupon.builder().couponId(c).member(m).status(1).build());
             }
         }
 
         myCouponRepository.saveAll(result);
 
         return 1;
+    }
+
+    @Override
+    public Long saveCoupons(Long memberId, Long couponId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
+        );
+
+        MyCoupon coupon = myCouponRepository.save(MyCoupon.builder()
+                                                        .couponId(couponId)
+                                                        .member(member)
+                                                        .status(1)
+                                                        .build());
+
+        return coupon.getId();
     }
 
     @Override
