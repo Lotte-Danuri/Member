@@ -13,21 +13,17 @@ import lombok.RequiredArgsConstructor;
 public class LikesReqDto {
 
     private Long id;
-    private Long memberId;
-    private Long productId;
-    private Boolean isInsert;
+    private String productCode;
 
-    public LikesReqDto(Long id, Long memberId, Long productId, Boolean isInsert) {
+    public LikesReqDto(Long id, String productCode) {
         this.id = id;
-        this.memberId = memberId;
-        this.productId = productId;
-        this.isInsert = isInsert;
+        this.productCode = productCode;
     }
 
     public Likes toEntity(Member member) {
         return Likes.builder()
             .member(member)
-            .productId(productId)
+            .productCode(productCode)
             .build();
     }
 
