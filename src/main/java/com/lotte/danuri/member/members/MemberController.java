@@ -149,12 +149,12 @@ public class MemberController {
     @ApiOperation(value = "좋아요 상품 조회", notes = "회원의 좋아요한 상품 조회")
     public ResponseEntity<?> getLikes(@RequestHeader String memberId) {
 
-        List<Long> productList = likesService.getLikes(memberId);
+        List<String> productList = likesService.getLikes(memberId);
 
         log.info("Before Call [getProducts] Method IN [Product-Service]");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
         List<ProductDto> resultList = circuitBreaker.run(() ->
-            productClient.getProducts(ProductListDto.builder().productId(productList).build()),
+            productClient.getProductsByCode(ProductListDto.builder().productCode(productList).build()),
             throwable -> new ArrayList<>());
         log.info("After Call [getProducts] Method IN [Product-Service]");
 
