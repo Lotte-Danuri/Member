@@ -69,6 +69,7 @@ public class CartServiceImpl implements CartService{
         List<CartListRespDto> cartList = new ArrayList<>();
         for(int i=0;i<resultList.size();i++) {
             cartList.add(CartListRespDto.builder()
+                .id(resultList.get(i).getId())
                 .quantity(resultList.get(i).getQuantity())
                 .productDto(productList.get(i))
                 .storeName(storeNameList.get(i))

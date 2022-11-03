@@ -9,6 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CartListRespDto {
 
+    private Long id;
+
     private int quantity;
 
     private ProductDto productDto;
