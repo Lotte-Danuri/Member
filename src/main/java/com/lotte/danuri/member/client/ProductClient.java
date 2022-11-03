@@ -1,5 +1,7 @@
 package com.lotte.danuri.member.client;
 
+import com.lotte.danuri.member.client.dto.CouponDto;
+import com.lotte.danuri.member.client.dto.CouponListDto;
 import com.lotte.danuri.member.client.dto.CouponReqDto;
 import com.lotte.danuri.member.client.dto.CouponRespDto;
 import com.lotte.danuri.member.client.dto.ProductDto;
@@ -21,5 +23,8 @@ public interface ProductClient {
 
     @PostMapping("/admin/coupons/list")
     List<CouponRespDto> getCoupons(@RequestBody CouponReqDto dto);
+
+    @PostMapping("/coupons/list")
+    List<CouponDto> getCouponDetailList(@RequestBody CouponListDto dto);
 
 }
