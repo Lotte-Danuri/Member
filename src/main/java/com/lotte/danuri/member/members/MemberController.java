@@ -5,7 +5,7 @@ import com.lotte.danuri.member.client.OrderClient;
 import com.lotte.danuri.member.client.ProductClient;
 import com.lotte.danuri.member.client.dto.OrderHeaderDto;
 import com.lotte.danuri.member.client.dto.ProductDto;
-import com.lotte.danuri.member.client.dto.ProductListDto;
+import com.lotte.danuri.member.client.dto.ProductListByCodeDto;
 import com.lotte.danuri.member.coupon.MyCouponService;
 import com.lotte.danuri.member.follow.FollowService;
 import com.lotte.danuri.member.likes.LikesService;
@@ -154,7 +154,7 @@ public class MemberController {
         log.info("Before Call [getProducts] Method IN [Product-Service]");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
         List<ProductDto> resultList = circuitBreaker.run(() ->
-            productClient.getProductsByCode(ProductListDto.builder().productCode(productList).build()),
+            productClient.getProductListByCode(ProductListByCodeDto.builder().productCode(productList).build()),
             throwable -> new ArrayList<>());
         log.info("After Call [getProducts] Method IN [Product-Service]");
 

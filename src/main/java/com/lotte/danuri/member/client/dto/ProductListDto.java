@@ -10,6 +10,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ProductListDto {
 
-    private List<String> productCode;
-
+    private List<Long> productId;
 }

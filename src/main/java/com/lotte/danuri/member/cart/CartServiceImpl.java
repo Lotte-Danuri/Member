@@ -2,13 +2,10 @@ package com.lotte.danuri.member.cart;
 
 import com.lotte.danuri.member.cart.dto.CartDeleteReqDto;
 import com.lotte.danuri.member.cart.dto.CartInsertReqDto;
-import com.lotte.danuri.member.cart.dto.CartReqDto;
-import com.lotte.danuri.member.cart.dto.CartRespDto;
 import com.lotte.danuri.member.cart.dto.CartUpdateReqDto;
 import com.lotte.danuri.member.client.ProductClient;
 import com.lotte.danuri.member.client.dto.CartListRespDto;
 import com.lotte.danuri.member.client.dto.ProductDto;
-import com.lotte.danuri.member.client.dto.ProductIdListDto;
 import com.lotte.danuri.member.client.dto.ProductListDto;
 import com.lotte.danuri.member.common.exception.codes.CommonErrorCode;
 import com.lotte.danuri.member.common.exception.codes.MemberErrorCode;
@@ -22,7 +19,6 @@ import com.lotte.danuri.member.store.Store;
 import com.lotte.danuri.member.store.StoreRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
@@ -55,7 +51,7 @@ public class CartServiceImpl implements CartService{
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
         List<Long> productIdList = resultList.stream().map(Cart::getProductId).toList();
         List<ProductDto> productList = circuitBreaker.run(() ->
-            productClient.getProductsById(ProductIdListDto.builder().productIdList(productIdList).build()),
+            productClient.getProductListById(ProductListDto.builder().productId(productIdList).build()),
             throwable -> new ArrayList<>());
         log.info("After Call [getProducts] Method IN [Product-Service]");
 
