@@ -1,6 +1,8 @@
 package com.lotte.danuri.member.coupon;
 
 import com.lotte.danuri.member.client.ProductClient;
+import com.lotte.danuri.member.client.dto.CouponDto;
+import com.lotte.danuri.member.client.dto.CouponListDto;
 import com.lotte.danuri.member.client.dto.CouponReqDto;
 import com.lotte.danuri.member.client.dto.CouponRespDto;
 import com.lotte.danuri.member.coupon.dto.MyCouponInsertReqDto;
@@ -97,13 +99,24 @@ public class MyCouponController {
     @PostMapping("/product")
     @ApiOperation(value = "상품 적용 가능한 쿠폰 조회", notes = "마이쿠폰함에 현재 구매할 상품에 적용 가능한 쿠폰을 가지고 있는지 조회")
     public ResponseEntity<?> getProductCoupons(@RequestHeader String memberId,
-                                                @RequestBody Long productId) {
+                                                @RequestBody MyCouponReqDto dto) {
 
         List<Long> couponIdList = myCouponService.getMyCoupons(Long.parseLong(memberId));
         if(!couponIdList.isEmpty()) {
 
+            log.info("Before Call [getCouponDetailList] Method IN [Product-Service]");
+            CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
+            List<CouponDto> result = circuitBreaker.run(() ->
+                productClient.getCouponDetailList(CouponListDto.builder()
+                                                        .couponId(couponIdList)
+                                                        .productId(dto.getProductId())
+                                                        .build()),
+                throwable -> new ArrayList<>());
+            log.info("After Call [getCouponDetailList] Method IN [Product-Service]");
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
-        return null;
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
 }
