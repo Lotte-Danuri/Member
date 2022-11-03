@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -47,9 +48,9 @@ public class MyCouponController {
     @PostMapping("/person")
     @ApiOperation(value = "쿠폰 저장", notes = "개인 회원에게 쿠폰 발급 및 저장")
     public ResponseEntity<?> insert(@RequestHeader String memberId,
-                                    @RequestBody Long couponId) {
+                                    @RequestBody MyCouponReqDto dto) {
         Long result =
-            myCouponService.saveCoupons(Long.parseLong(memberId), couponId);
+            myCouponService.saveCoupons(Long.parseLong(memberId), dto.getId());
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
@@ -58,8 +59,8 @@ public class MyCouponController {
 
     @GetMapping("/all")
     @ApiOperation(value = "쿠폰 조회", notes = "마이쿠폰함에 있는 모든 쿠폰 조회")
-    public ResponseEntity<?> getAllCoupons(@RequestBody MyCouponReqDto dto) {
-        List<Long> result = myCouponService.getMyCoupons(dto.getMemberId());
+    public ResponseEntity<?> getAllCoupons(@RequestHeader String memberId) {
+        List<Long> result = myCouponService.getMyCoupons(Long.parseLong(memberId));
 
         log.info("Before Call [getCoupons] Method IN [Product-Service]");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
@@ -73,10 +74,11 @@ public class MyCouponController {
 
     @GetMapping("/status")
     @ApiOperation(value = "쿠폰 조회", notes = "마이쿠폰함에 있는 쿠폰 상태별 조회")
-    public ResponseEntity<?> getCoupons(@RequestBody MyCouponReqDto dto) {
+    public ResponseEntity<?> getCoupons(@RequestHeader String memberId,
+                                        @RequestBody MyCouponReqDto dto) {
 
         ///////////// productClient 사용 필요
-        List<MyCouponRespDto> result = myCouponService.getMyCouponsByStatus(dto.getMemberId(), dto.getStatus());
+        List<MyCouponRespDto> result = myCouponService.getMyCouponsByStatus(Long.parseLong(memberId), dto.getStatus());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -90,5 +92,18 @@ public class MyCouponController {
     @ApiOperation(value = "쿠폰 삭제", notes = "마이쿠폰함에서 쿠폰 삭제")
     public ResponseEntity<?> delete(@RequestBody MyCouponReqDto dto) {
         return new ResponseEntity<>(myCouponService.delete(dto.getId()), HttpStatus.OK);
+    }
+
+    @PostMapping("/product")
+    @ApiOperation(value = "상품 적용 가능한 쿠폰 조회", notes = "마이쿠폰함에 현재 구매할 상품에 적용 가능한 쿠폰을 가지고 있는지 조회")
+    public ResponseEntity<?> getProductCoupons(@RequestHeader String memberId,
+                                                @RequestBody Long productId) {
+
+        List<Long> couponIdList = myCouponService.getMyCoupons(Long.parseLong(memberId));
+        if(!couponIdList.isEmpty()) {
+
+        }
+
+        return null;
     }
 }

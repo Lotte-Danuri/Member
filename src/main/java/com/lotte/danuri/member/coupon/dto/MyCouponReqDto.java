@@ -13,7 +13,7 @@ public class MyCouponReqDto {
 
     private Long id;
 
-    private Long memberId;
+    private Long productId;
 
     private int status;
 
