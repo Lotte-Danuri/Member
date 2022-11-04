@@ -17,4 +17,6 @@ public class MyCouponReqDto {
 
     private int status;
 
+    private Long memberId;
+
 }

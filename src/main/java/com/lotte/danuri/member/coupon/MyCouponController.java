@@ -76,10 +76,9 @@ public class MyCouponController {
 
     @PostMapping("/check")
     @ApiOperation(value = "쿠폰 보유 여부 조회", notes = "채팅방에서 쿠폰 수락 여부 표시를 위한 보유 여부 조회")
-    public ResponseEntity<?> check(@RequestHeader String memberId,
-                                    @RequestBody MyCouponReqDto dto) {
+    public ResponseEntity<?> check(@RequestBody MyCouponReqDto dto) {
         log.info("Before Retrieve [checkIfHasCoupon] Method IN [MyCoupon-Service]");
-        boolean result = myCouponService.checkIfHasCoupon(Long.parseLong(memberId), dto.getId());
+        boolean result = myCouponService.checkIfHasCoupon(dto.getMemberId(), dto.getId());
         log.info("After Retrieve [checkIfHasCoupon] Method IN [MyCoupon-Service]");
 
         return new ResponseEntity<>(result, HttpStatus.OK);
