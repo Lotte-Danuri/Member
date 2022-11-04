@@ -12,6 +12,8 @@ public interface MyCouponService {
 
     List<Long> getMyCoupons(Long memberId);
 
+    boolean checkIfHasCoupon(Long memberId, Long couponId);
+
     List<MyCouponRespDto> getMyCouponsByStatus(Long memberId, int status);
 
     int updateStatus(Long myCouponId, int status);

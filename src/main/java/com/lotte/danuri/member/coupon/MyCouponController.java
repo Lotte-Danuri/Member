@@ -74,6 +74,14 @@ public class MyCouponController {
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
+    @PostMapping("/check")
+    @ApiOperation(value = "쿠폰 보유 여부 조회", notes = "채팅방에서 쿠폰 수락 여부 표시를 위한 보유 여부 조회")
+    public ResponseEntity<?> check(@RequestHeader String memberId,
+                                    @RequestBody MyCouponReqDto dto) {
+        boolean result = myCouponService.checkIfHasCoupon(Long.parseLong(memberId), dto.getId());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @GetMapping("/status")
     @ApiOperation(value = "쿠폰 조회", notes = "마이쿠폰함에 있는 쿠폰 상태별 조회")
     public ResponseEntity<?> getCoupons(@RequestHeader String memberId,
