@@ -75,4 +75,17 @@ public class MyCouponServiceTest {
 
         assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    void 쿠폰_보유여부_조회() {
+
+        Long memberId = 122L;
+        Long couponId = 45L;
+
+        boolean result = myCouponService.checkIfHasCoupon(memberId, couponId);
+        boolean fail = myCouponService.checkIfHasCoupon(100L, 46L);
+
+        assertThat(result).isEqualTo(true);
+        assertThat(fail).isEqualTo(false);
+    }
 }

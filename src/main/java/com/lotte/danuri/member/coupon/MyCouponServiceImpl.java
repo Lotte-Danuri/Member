@@ -75,6 +75,11 @@ public class MyCouponServiceImpl implements MyCouponService {
     }
 
     @Override
+    public boolean checkIfHasCoupon(Long memberId, Long couponId) {
+        return myCouponRepository.findByMemberIdAndCouponId(memberId, couponId).isPresent();
+    }
+
+    @Override
     public List<MyCouponRespDto> getMyCouponsByStatus(Long memberId, int status) {
         return myCouponRepository.findByMemberIdAndStatusAndDeletedDateIsNull(memberId, status).orElseGet(ArrayList::new)
             .stream().map(c -> MyCouponRespDto.builder()
