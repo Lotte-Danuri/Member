@@ -1,6 +1,7 @@
 package com.lotte.danuri.member.store;
 
 import com.lotte.danuri.member.store.dto.StoreDto;
+import com.lotte.danuri.member.store.dto.StoreInfoRespDto;
 import com.lotte.danuri.member.store.dto.StoreRespDto;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -54,14 +55,14 @@ public class StoreController {
     }
 
     @GetMapping("/name/{storeId}")
-    @ApiOperation(value = "스토어 이름 조회", notes = "스토어 이름을 조회")
+    @ApiOperation(value = "스토어 정보 조회", notes = "스토어 id로 스토어,브랜드 정보 조회")
     public ResponseEntity<?> getNames(@PathVariable(name = "storeId") Long storeId) {
 
         log.info("Before Retrieve [getNames] Method IN [Member-Service]");
-        String name = storeService.getName(storeId);
+        StoreInfoRespDto result = storeService.getStoreInfo(storeId);
         log.info("After Retrieve [getNames] Method IN [Member-Service]");
 
-        return new ResponseEntity<>(name, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{brandId}")
