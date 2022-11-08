@@ -13,6 +13,7 @@ import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
 import com.lotte.danuri.member.store.dto.BrandDto;
 import com.lotte.danuri.member.store.dto.StoreDto;
+import com.lotte.danuri.member.store.dto.StoreInfoRespDto;
 import com.lotte.danuri.member.store.dto.StoreRespDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,13 +99,18 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public String getName(Long storeId) {
+    public StoreInfoRespDto getStoreInfo(Long storeId) {
         Store store = storeRepository.findByIdAndDeletedDateIsNull(storeId).orElseThrow(
             () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(),
                 StoreErrorCode.NO_STORE_EXISTS)
         );
 
-        return store.getName();
+        return StoreInfoRespDto.builder()
+            .storeId(store.getId())
+            .storeName(store.getName())
+            .brandId(store.getBrand().getId())
+            .brandName(store.getBrand().getName())
+            .build();
     }
 
     @Override

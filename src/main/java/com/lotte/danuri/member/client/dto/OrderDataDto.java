@@ -21,5 +21,6 @@ public class OrderDataDto {
     private LocalDateTime warrantyStartDate;
     private LocalDateTime warrantyEndDate;
     private String thumbnail;
+    private String productCode;
 
 }
