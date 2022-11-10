@@ -19,4 +19,6 @@ public class MyCouponReqDto {
 
     private Long memberId;
 
+    private Long couponId;
+
 }

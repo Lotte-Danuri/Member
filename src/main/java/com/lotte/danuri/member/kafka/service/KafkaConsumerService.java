@@ -9,4 +9,6 @@ public interface KafkaConsumerService {
 
     void deleteCart(String kafkaMessage);
 
+    void insertMyCouponByPromotion(String kafkaMessage);
+
 }
