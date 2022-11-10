@@ -12,6 +12,10 @@ import com.lotte.danuri.member.coupon.MyCoupon;
 import com.lotte.danuri.member.coupon.MyCouponRepository;
 import com.lotte.danuri.member.follow.Follow;
 import com.lotte.danuri.member.follow.FollowRepository;
+import com.lotte.danuri.member.members.Member;
+import com.lotte.danuri.member.members.MemberRepository;
+import com.lotte.danuri.member.promotion.Promotion;
+import com.lotte.danuri.member.promotion.PromotionRepository;
 import com.lotte.danuri.member.store.Store;
 import com.lotte.danuri.member.store.StoreRepository;
 import java.util.HashMap;
@@ -31,6 +35,8 @@ public class KafkaConsumerServiceImpl implements  KafkaConsumerService{
     private final FollowRepository followRepository;
     private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
+    private final PromotionRepository promotionRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Map<Object, Object> kafkaInit(String kafkaMessage){
@@ -82,5 +88,22 @@ public class KafkaConsumerServiceImpl implements  KafkaConsumerService{
         cartRepository.deleteAllByMemberId(memberId);
         log.info("[Kafka] CartDelete delete cart");
 
+    }
+
+    @Override
+    @KafkaListener(topics = "promotion-coupon-insert")
+    public void insertMyCouponByPromotion(String kafkaMessage) {
+
+        Map<Object, Object> msgInfo = kafkaInit(kafkaMessage);
+        Long memberId = Long.valueOf(String.valueOf(msgInfo.get("memberId")));
+        Member member = memberRepository.findById(131L).orElseThrow();
+        log.info("memberId = {}", memberId);
+
+        Long promotionId = Long.valueOf(String.valueOf(msgInfo.get("promotionId")));
+        Promotion promotion = promotionRepository.findById(promotionId).orElseThrow();
+        Long couponId = promotion.getCouponId();
+
+        myCouponRepository.save(MyCoupon.builder().couponId(couponId).member(member).status(1).build());
+        log.info("[Kafka] MyCouponInsert save MyCoupons : {}", couponId);
     }
 }

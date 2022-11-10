@@ -23,5 +23,6 @@ public class Promotion extends BaseEntity {
     private LocalDateTime endDate;
     private String buttonUrl;
     private LocalDateTime deletedDate;
+    private Long couponId;
 
 }
