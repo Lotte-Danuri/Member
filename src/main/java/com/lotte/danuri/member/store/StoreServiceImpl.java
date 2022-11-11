@@ -50,15 +50,10 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<StoreRespDto> getStores(Long storeId) {
-
-        Store store = storeRepository.findByIdAndDeletedDateIsNull(storeId).orElseThrow(
-            () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(),
-                                        StoreErrorCode.NO_STORE_EXISTS)
-        );
+    public List<StoreRespDto> getStores(Long brandId) {
 
         List<Store> storeList =
-            storeRepository.findByBrandIdAndDeletedDateIsNull(store.getBrand().getId()).orElseGet(ArrayList::new);
+            storeRepository.findByBrandIdAndDeletedDateIsNull(brandId).orElseGet(ArrayList::new);
 
         return storeList.stream().map(s -> StoreRespDto.builder()
                                             .storeId(s.getId())
