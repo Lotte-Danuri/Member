@@ -32,7 +32,7 @@ public class FollowServiceImpl implements FollowService {
     private final StoreRepository storeRepository;
 
     @Override
-    public int register(Long memberId, Long storeId) {
+    public Long register(Long memberId, Long storeId) {
 
         Member member = memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
@@ -43,12 +43,12 @@ public class FollowServiceImpl implements FollowService {
         );
 
         if (followRepository.findByMemberIdAndStoreIdAndDeletedDateIsNull(member.getId(), store.getId()).isPresent()) {
-            return 0;
+            return 0L;
         }
 
         Follow result = followRepository.save(Follow.builder().member(member).store(store).build());
         member.updateFollows(result);
-        return 1;
+        return result.getId();
     }
 
     @Override

@@ -9,7 +9,7 @@ import javax.persistence.FetchType;
 
 public interface FollowService {
 
-    int register(Long memberId, Long storeId);
+    Long register(Long memberId, Long storeId);
 
     List<StoreDto> getStoresByFollow(Long memberId);
 
