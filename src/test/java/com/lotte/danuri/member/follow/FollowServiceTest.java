@@ -3,6 +3,7 @@ package com.lotte.danuri.member.follow;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lotte.danuri.member.follow.dto.FollowDto;
+import com.lotte.danuri.member.follow.dto.FollowRespDto;
 import com.lotte.danuri.member.members.MemberRepository;
 import com.lotte.danuri.member.members.MemberService;
 import com.lotte.danuri.member.store.dto.StoreDto;
@@ -23,29 +24,31 @@ public class FollowServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+    Long memberId = 131L;
+
     @Test
     void 스토어_팔로우_등록() {
 
-        FollowDto dto = FollowDto.builder().memberId(4L).storeId(10L)
+        FollowDto dto = FollowDto.builder().memberId(memberId).storeId(13L)
             .build();
 
-        FollowDto dto2 = FollowDto.builder().memberId(4L).storeId(11L)
+        FollowDto dto2 = FollowDto.builder().memberId(memberId).storeId(14L)
             .build();
 
-        int result = followService.register(dto);
-        followService.register(dto2);
+        int result = followService.register(memberId, 13L);
+        followService.register(memberId, 14L);
 
-        int size = memberRepository.findById(4L).get().getFollowList().size();
+        int size = memberRepository.findById(memberId).get().getFollowList().size();
 
 
-        assertThat(size).isEqualTo(4);
+        assertThat(size).isEqualTo(2);
         assertThat(result).isEqualTo(1);
 
     }
     @Test
     void 스토어_팔로우_목록_조회_스토어() {
 
-        List<StoreDto> list = followService.getStoresByFollow(4L);
+        List<StoreDto> list = followService.getStoresByFollow(memberId);
 
         list.forEach(s -> System.out.println(s.getName()));
 
@@ -56,7 +59,7 @@ public class FollowServiceTest {
     @Test
     void 스토어_팔로우_목록_조회_회원() {
 
-        Long storeId = 10L;
+        Long storeId = 13L;
 
         List<Long> list = followService.getMembersByFollow(storeId);
 
@@ -64,13 +67,22 @@ public class FollowServiceTest {
 
         assertThat(list.size()).isGreaterThanOrEqualTo(0);
     }
+
+    @Test
+    void 회원_스토어_팔로우_여부_조회() {
+
+        FollowRespDto dto = followService.check(memberId, 13L);
+
+        assertThat(dto.getStatus()).isEqualTo(true);
+    }
+
     @Test
     void 스토어_팔로우_목록_취소() {
 
-        FollowDto dto = FollowDto.builder().id(14L).memberId(4L)
+        FollowDto dto = FollowDto.builder().id(14L).storeId(13L)
             .build();
 
-        int result = followService.delete(dto);
+        int result = followService.delete(memberId, dto);
 
         assertThat(result).isEqualTo(1);
     }

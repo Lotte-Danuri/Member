@@ -7,6 +7,7 @@ import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoResourceException;
 import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
 import com.lotte.danuri.member.follow.dto.FollowDto;
+import com.lotte.danuri.member.follow.dto.FollowRespDto;
 import com.lotte.danuri.member.members.Member;
 import com.lotte.danuri.member.members.MemberRepository;
 import com.lotte.danuri.member.members.dto.MemberRespDto;
@@ -31,13 +32,13 @@ public class FollowServiceImpl implements FollowService {
     private final StoreRepository storeRepository;
 
     @Override
-    public int register(FollowDto dto) {
+    public int register(Long memberId, Long storeId) {
 
-        Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 
-        Store store = storeRepository.findById(dto.getStoreId()).orElseThrow(
+        Store store = storeRepository.findById(storeId).orElseThrow(
             () -> new NoStoreException(StoreErrorCode.NO_STORE_EXISTS.getMessage(), StoreErrorCode.NO_STORE_EXISTS)
         );
 
@@ -45,7 +46,7 @@ public class FollowServiceImpl implements FollowService {
             return 0;
         }
 
-        Follow result = followRepository.save(dto.toEntity(member, store));
+        Follow result = followRepository.save(Follow.builder().member(member).store(store).build());
         member.updateFollows(result);
         return 1;
     }
@@ -70,9 +71,9 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public int delete(FollowDto dto) {
+    public int delete(Long memberId, FollowDto dto) {
 
-        Member member = memberRepository.findByIdAndDeletedDateIsNull(dto.getMemberId()).orElseThrow(
+        Member member = memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
 
@@ -108,6 +109,22 @@ public class FollowServiceImpl implements FollowService {
         return store.getFollowList().stream().map(
             f -> f.getMember().getId()).toList();
 
+    }
+
+    @Override
+    public FollowRespDto check(Long memberId, Long storeId) {
+        Optional<Follow> result = followRepository.findByMemberIdAndStoreIdAndDeletedDateIsNull(memberId,storeId);
+
+        if(result.isPresent()) {
+            return FollowRespDto.builder()
+                .id(result.get().getId())
+                .status(true)
+                .build();
+        }
+
+        return FollowRespDto.builder()
+            .status(false)
+            .build();
     }
 
 }

@@ -37,4 +37,5 @@ public class Follow extends BaseEntity {
     public void delete() {
         this.deletedDate = LocalDateTime.now();
     }
+
 }
