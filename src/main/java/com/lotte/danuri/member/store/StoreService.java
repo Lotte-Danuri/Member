@@ -20,4 +20,6 @@ public interface StoreService {
 
     List<Long> getStoreId(Long brandId);
 
+    BrandDto getBrandInfo(Long brandId);
+
 }

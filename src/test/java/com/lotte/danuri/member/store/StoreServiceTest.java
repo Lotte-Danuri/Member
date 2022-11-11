@@ -7,6 +7,7 @@ import com.lotte.danuri.member.common.exception.exceptions.DuplicatedStoreNameEx
 import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationException;
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
+import com.lotte.danuri.member.store.dto.BrandDto;
 import com.lotte.danuri.member.store.dto.StoreDto;
 import com.lotte.danuri.member.store.dto.StoreInfoRespDto;
 import com.lotte.danuri.member.store.dto.StoreRespDto;
@@ -79,5 +80,14 @@ public class StoreServiceTest {
 
         stores.forEach(System.out::println);
         assertThat(stores.size()).isGreaterThanOrEqualTo(0);
+    }
+
+    @Test
+    void 브랜드_정보_조회() {
+
+        BrandDto dto = storeService.getBrandInfo(9L);
+
+        System.out.println(dto.getId() + " " + dto.getName() + " " + dto.getImageUrl());
+        assertThat(dto.getId()).isEqualTo(9L);
     }
 }
