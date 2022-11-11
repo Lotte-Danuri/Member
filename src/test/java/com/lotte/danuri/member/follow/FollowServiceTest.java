@@ -29,12 +29,6 @@ public class FollowServiceTest {
     @Test
     void 스토어_팔로우_등록() {
 
-        FollowDto dto = FollowDto.builder().memberId(memberId).storeId(13L)
-            .build();
-
-        FollowDto dto2 = FollowDto.builder().memberId(memberId).storeId(14L)
-            .build();
-
         int result = followService.register(memberId, 13L);
         followService.register(memberId, 14L);
 
