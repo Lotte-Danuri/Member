@@ -8,6 +8,7 @@ import com.lotte.danuri.member.common.exception.exceptions.NoAuthorizationExcept
 import com.lotte.danuri.member.common.exception.exceptions.NoMemberException;
 import com.lotte.danuri.member.common.exception.exceptions.NoStoreException;
 import com.lotte.danuri.member.store.dto.StoreDto;
+import com.lotte.danuri.member.store.dto.StoreInfoRespDto;
 import com.lotte.danuri.member.store.dto.StoreRespDto;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -25,60 +26,11 @@ public class StoreServiceTest {
     StoreService storeService;
 
     @Test
-    void 스토어_등록_성공() {
-
-        StoreDto dto = StoreDto.builder()
-            .sellerId(2L)
-            .name("aaaaaaaaaaaaa")
-            .address("서울특별시 중구")
-            .description("aaaaaaaa")
-            .ownerNumber("010-1133-1133")
-            .build();
-
-        int result = storeService.register(dto);
-
-        assertThat(result).isEqualTo(1);
-    }
-
-    @Test
-    void 스토어_등록_실패() {
-
-        StoreDto dto = StoreDto.builder()
-            .sellerId(2L)
-            .name("adidas")
-            .address("경기도 김포시")
-            .description("아디다스 매장")
-            .ownerNumber("010-1122-1122")
-            .build();
-
-        assertThatThrownBy(() -> storeService.register(dto))
-            .isInstanceOf(DuplicatedStoreNameException.class)
-            .hasMessageContaining("Duplicated Store Name");
-    }
-
-    @Test
-    void 스토어_등록_실패_셀러권한없는경우() {
-
-        StoreDto dto = StoreDto.builder()
-            .sellerId(1L)
-            .name("bbbb")
-            .address("서울특별시 홍대")
-            .description("bbbbbb")
-            .ownerNumber("010-9999-2222")
-            .build();
-
-        assertThatThrownBy(() -> storeService.register(dto))
-            .isInstanceOf(NoAuthorizationException.class)
-            .hasMessageContaining("Seller is unauthorized");
-
-    }
-
-    @Test
     void 스토어_조회() {
 
-        Long storeId = 3L;
+        Long brandId = 6L;
 
-        List<StoreRespDto> list = storeService.getStores(storeId);
+        List<StoreRespDto> list = storeService.getStores(brandId);
         list.forEach(s -> {
             System.out.println(s.getStoreId() + " " + s.getStoreName());
         });
@@ -86,44 +38,6 @@ public class StoreServiceTest {
         assertThat(list.size()).isGreaterThanOrEqualTo(0);
 
     }
-
-    /*@Test
-    void 스토어_정보_수정_성공() {
-
-        StoreDto dto = StoreDto.builder()
-            .id(10L)
-            .sellerId(1L)
-            .name("hello nikes~!~!~!~~!!~!!")
-            .address("서울특별시 강남구")
-            .description("~~~!~!~!~!~!~!~!~!")
-            .ownerNumber("010-1111-1111")
-            .build();
-
-        int result = storeService.update(dto);
-        StoreDto store = storeService.getStores(1L);
-
-        assertThat(result).isEqualTo(1);
-        assertThat(store.getName()).isEqualTo("hello nikes~!~!~!~~!!~!!");
-
-    }
-
-    @Test
-    void 스토어_정보_수정_실패() {
-
-        StoreDto dto = StoreDto.builder()
-            .id(100L)
-            .sellerId(3L)
-            .name("hello nikes!!!!")
-            .address("서울특별시 강남구")
-            .description("~~~!~!~!~!~!~!~!~!")
-            .ownerNumber("010-1111-1111")
-            .build();
-
-        assertThatThrownBy(() -> storeService.update(dto))
-            .isInstanceOf(NoStoreException.class)
-            .hasMessageContaining("Store is not existed");
-
-    }*/
 
     @Test
     void 스토어_삭제_성공() {
@@ -150,9 +64,9 @@ public class StoreServiceTest {
 
         Long storeId = 1L;
 
-        String name = storeService.getName(storeId);
+        StoreInfoRespDto dto = storeService.getStoreInfo(storeId);
 
-        assertThat(name).isEqualTo("강남점");
+        assertThat(dto.getStoreName()).isEqualTo("강남점");
 
     }
 

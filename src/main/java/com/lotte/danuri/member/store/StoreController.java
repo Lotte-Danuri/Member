@@ -26,11 +26,11 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    @GetMapping("/{storeId}/list")
+    @GetMapping("/stores/{brandId}")
     @ApiOperation(value = "스토어 목록 조회", notes = "브랜드의 스토어(지점) 조회")
-    public ResponseEntity<?> getStore(@PathVariable(name = "storeId") Long storeId) {
+    public ResponseEntity<?> getStore(@PathVariable(name = "brandId") Long brandId) {
 
-        List<StoreRespDto> storeList = storeService.getStores(storeId);
+        List<StoreRespDto> storeList = storeService.getStores(brandId);
 
         return new ResponseEntity<>(storeList, HttpStatus.OK);
     }

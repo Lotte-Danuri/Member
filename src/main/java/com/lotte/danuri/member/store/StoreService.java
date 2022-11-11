@@ -10,7 +10,7 @@ public interface StoreService {
 
     BrandDto getBrand(Long storeId);
 
-    List<StoreRespDto> getStores(Long storeId);
+    List<StoreRespDto> getStores(Long brandId);
 
     int update(StoreDto dto);
 
