@@ -1,5 +1,6 @@
 package com.lotte.danuri.member.store;
 
+import com.lotte.danuri.member.store.dto.BrandDto;
 import com.lotte.danuri.member.store.dto.StoreDto;
 import com.lotte.danuri.member.store.dto.StoreInfoRespDto;
 import com.lotte.danuri.member.store.dto.StoreRespDto;
@@ -30,7 +31,9 @@ public class StoreController {
     @ApiOperation(value = "스토어 목록 조회", notes = "브랜드의 스토어(지점) 조회")
     public ResponseEntity<?> getStore(@PathVariable(name = "brandId") Long brandId) {
 
+        log.info("Before Retrieve [getStore] Method IN [Member-Service]");
         List<StoreRespDto> storeList = storeService.getStores(brandId);
+        log.info("After Retrieve [getStore] Method IN [Member-Service]");
 
         return new ResponseEntity<>(storeList, HttpStatus.OK);
     }
@@ -74,6 +77,14 @@ public class StoreController {
         log.info("After Retrieve [getStoreId] Method IN [Member-Service]");
 
         return new ResponseEntity<>(storeIds, HttpStatus.OK);
+    }
+
+    @GetMapping("/brand/{brandId}")
+    @ApiOperation(value = "브랜드 정보 조회", notes = "브랜드 상세 정보 조회")
+    public ResponseEntity<?> getBrandInfo(@PathVariable(name = "brandId") Long brandId) {
+        BrandDto result = storeService.getBrandInfo(brandId);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

@@ -17,6 +17,7 @@ import com.lotte.danuri.member.store.dto.StoreInfoRespDto;
 import com.lotte.danuri.member.store.dto.StoreRespDto;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -117,5 +118,18 @@ public class StoreServiceImpl implements StoreService {
 
         return stores.stream().map(BaseEntity::getId).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public BrandDto getBrandInfo(Long brandId) {
+        Brand brand = brandRepository.findById(brandId).orElseThrow(
+            () -> new NoSuchElementException(CommonErrorCode.RESOURCE_NOT_FOUND.getMessage())
+        );
+
+        return BrandDto.builder()
+            .id(brand.getId())
+            .name(brand.getName())
+            .imageUrl(brand.getImage())
+            .build();
     }
 }
