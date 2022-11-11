@@ -15,15 +15,6 @@ import lombok.Getter;
 public class FollowDto {
 
     private Long id;
-    private Long memberId;
-
     private Long storeId;
-
-    public Follow toEntity(Member member, Store store) {
-        return Follow.builder()
-            .member(member)
-            .store(store)
-            .build();
-    }
 
 }
