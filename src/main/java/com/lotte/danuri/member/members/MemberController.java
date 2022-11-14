@@ -93,7 +93,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    @ApiOperation(value = "회원 정보 조회", notes = "회원 가입 후 정보 조회")
+    @ApiOperation(value = "회원 정보 조회", notes = "회원 아이디로 회원 정보 ")
     public ResponseEntity<?> getInfoOfMember(@PathVariable Long memberId) {
         return new ResponseEntity<>(memberService.getMember(memberId), HttpStatus.OK);
     }
