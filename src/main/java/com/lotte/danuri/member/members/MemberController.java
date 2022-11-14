@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -89,6 +90,12 @@ public class MemberController {
     @ApiOperation(value = "회원 정보 조회", notes = "회원 가입 후 정보 조회")
     public ResponseEntity<?> getName(@RequestHeader String memberId) {
         return new ResponseEntity<>(memberService.getMember(Long.parseLong(memberId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{memberId}")
+    @ApiOperation(value = "회원 정보 조회", notes = "회원 아이디로 회원 정보 조회")
+    public ResponseEntity<?> getInfoOfMember(@PathVariable Long memberId) {
+        return new ResponseEntity<>(memberService.getMember(memberId), HttpStatus.OK);
     }
 
     @PatchMapping("/seller")
