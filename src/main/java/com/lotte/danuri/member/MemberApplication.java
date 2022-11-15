@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableFeignClients
 @CrossOrigin("*")
 public class MemberApplication {
-
 	@PostConstruct
 	public void started() {
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
