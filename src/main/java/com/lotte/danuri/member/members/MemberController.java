@@ -93,7 +93,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}")
-    @ApiOperation(value = "회원 정보 조회", notes = "회원 가입 후 정보 조회")
+    @ApiOperation(value = "회원 정보 조회", notes = "회원 정보 조회")
     public ResponseEntity<?> getInfoOfMember(@PathVariable Long memberId) {
         return new ResponseEntity<>(memberService.getMember(memberId), HttpStatus.OK);
     }
@@ -113,7 +113,7 @@ public class MemberController {
     }
 
 
-    @PatchMapping("/info")
+    @PostMapping("/info")
     @ApiOperation(value = "회원 수정", notes = "회원의 개인정보 수정")
     public ResponseEntity<?> updateInfo(@RequestBody MemberInfoReqDto dto) {
         return new ResponseEntity<>(memberService.updateMemberInfo(dto), HttpStatus.OK);
