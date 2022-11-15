@@ -64,9 +64,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Long updateMemberInfo(MemberInfoReqDto dto) {
+    public Long updateMemberInfo(Long memberId, MemberInfoReqDto dto) {
 
-        Member findMember = memberRepository.findByIdAndDeletedDateIsNull(dto.getId()).orElseThrow(
+        Member findMember = memberRepository.findByIdAndDeletedDateIsNull(memberId).orElseThrow(
             () -> new NoMemberException(MemberErrorCode.NO_MEMBER_EXISTS.getMessage(), MemberErrorCode.NO_MEMBER_EXISTS)
         );
         findMember.updateInfo(dto.getName(), dto.getAddress(), dto.getPhoneNumber());

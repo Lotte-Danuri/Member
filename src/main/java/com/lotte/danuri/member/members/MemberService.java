@@ -18,7 +18,7 @@ public interface MemberService {
 
     Long getSeller(Long memberId);
 
-    Long updateMemberInfo(MemberInfoReqDto dto);
+    Long updateMemberInfo(Long memberId, MemberInfoReqDto dto);
 
     MemberRespDto getMember(Long memberId);
 

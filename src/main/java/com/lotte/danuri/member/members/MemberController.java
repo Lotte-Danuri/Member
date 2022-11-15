@@ -115,8 +115,9 @@ public class MemberController {
 
     @PostMapping("/info")
     @ApiOperation(value = "회원 수정", notes = "회원의 개인정보 수정")
-    public ResponseEntity<?> updateInfo(@RequestBody MemberInfoReqDto dto) {
-        return new ResponseEntity<>(memberService.updateMemberInfo(dto), HttpStatus.OK);
+    public ResponseEntity<?> updateInfo(@RequestHeader String memberId,
+                                        @RequestBody MemberInfoReqDto dto) {
+        return new ResponseEntity<>(memberService.updateMemberInfo(Long.parseLong(memberId), dto), HttpStatus.OK);
     }
 
     @GetMapping("/products")
