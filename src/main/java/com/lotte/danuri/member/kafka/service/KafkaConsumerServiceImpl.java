@@ -21,6 +21,7 @@ import com.lotte.danuri.member.store.StoreRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -98,14 +99,19 @@ public class KafkaConsumerServiceImpl implements  KafkaConsumerService{
 
         Map<Object, Object> msgInfo = kafkaInit(kafkaMessage);
         Long memberId = Long.valueOf(String.valueOf(msgInfo.get("memberId")));
-        Member member = memberRepository.findById(131L).orElseThrow();
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        if(member.isEmpty()) {
+            member = memberRepository.findById(131L);
+        }
+
         log.info("memberId = {}", memberId);
 
         Long promotionId = Long.valueOf(String.valueOf(msgInfo.get("promotionId")));
         Promotion promotion = promotionRepository.findById(promotionId).orElseThrow();
         Long couponId = promotion.getCouponId();
 
-        myCouponRepository.save(MyCoupon.builder().couponId(couponId).member(member).status(1).build());
+        myCouponRepository.save(MyCoupon.builder().couponId(couponId).member(member.get()).status(1).build());
         log.info("[Kafka] MyCouponInsert save MyCoupons : {}", couponId);
     }
 }
